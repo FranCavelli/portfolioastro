@@ -1,0 +1,157 @@
+---
+const groups = [
+  {
+    title: "BACKEND",
+    className: "Warrior",
+    level: 92,
+    icon: "⚔",
+    items: ["PHP", "Laravel", "CodeIgniter", "Node.js", "Python", "MySQL", "REST APIs", "AFIP"],
+  },
+  {
+    title: "FRONTEND",
+    className: "Mage",
+    level: 88,
+    icon: "✦",
+    items: ["TypeScript", "Astro", "Next.js", "React", "Angular", "Three.js", "HTML/CSS"],
+  },
+  {
+    title: "DEVOPS",
+    className: "Engineer",
+    level: 78,
+    icon: "▣",
+    items: ["Docker", "OpenShift", "CI/CD", "Git", "Linux", "WordPress", "Tienda Nube"],
+  },
+];
+---
+
+<section class="section" id="skills">
+  <div class="section-inner">
+    <span class="eyebrow fade-up" data-i18n="skills.eyebrow">Stack técnico · Class panels</span>
+    <h2 class="fade-up">
+      <span data-i18n="skills.h2.a">Herramientas que uso </span><span class="glow" data-i18n="skills.h2.b">a diario</span><span data-i18n="skills.h2.c">.</span>
+    </h2>
+    <p class="fade-up" data-i18n="skills.paragraph">
+      Tres clases, del servidor al despliegue. Aprendo rápido lo que el
+      proyecto pida.
+    </p>
+
+    <div class="classes">
+      {groups.map((g) => (
+        <article class="class-panel card fade-up">
+          <header class="class-head">
+            <span class="class-icon" aria-hidden="true">{g.icon}</span>
+            <div class="class-title">
+              <div class="class-name">{g.title}</div>
+              <div class="class-sub">Class · {g.className}</div>
+            </div>
+            <div class="class-lvl" aria-label={`Nivel ${g.level}`}>
+              <span class="lvl-label">LVL</span>
+              <span class="lvl-value">{g.level}</span>
+            </div>
+          </header>
+
+          <div class="level-bar" aria-hidden="true">
+            <div class="level-bar-fill" style={`width:${g.level}%`}></div>
+          </div>
+
+          <div class="tags">
+            {g.items.map((item) => (
+              <span class="tag hoverable">{item}</span>
+            ))}
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .classes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-top: 6px;
+  }
+
+  .class-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .class-head {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .class-icon {
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    border-radius: 6px;
+    background: var(--accent-soft);
+    font-size: 1.3rem;
+    color: var(--accent);
+    border: 1px solid rgba(59, 255, 142, 0.35);
+    text-shadow: 0 0 10px rgba(59, 255, 142, 0.6);
+  }
+
+  .class-title {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .class-name {
+    font-family: var(--font-pixel);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    color: var(--ink);
+  }
+
+  .class-sub {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.08em;
+  }
+
+  .class-lvl {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    font-family: var(--font-mono);
+    color: var(--accent);
+  }
+
+  .lvl-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    opacity: 0.75;
+  }
+
+  .lvl-value {
+    font-size: 1.4rem;
+    font-weight: 700;
+    line-height: 1;
+    text-shadow: 0 0 10px rgba(59, 255, 142, 0.5);
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .hoverable {
+    transition: transform 140ms ease, color 140ms ease, border-color 140ms ease;
+  }
+  .hoverable:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    transform: translateY(-1px);
+  }
+</style>

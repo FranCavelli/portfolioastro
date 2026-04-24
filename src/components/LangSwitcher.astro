@@ -1,0 +1,95 @@
+---
+---
+
+<nav class="lang-switcher" aria-label="Idioma">
+  <div class="lang-head" aria-hidden="true">
+    <span class="hud-badge">
+      <span class="hud-dot"></span>LANG
+    </span>
+  </div>
+  <button class="lang-btn" data-lang-set="es" aria-label="Español">ES</button>
+  <button class="lang-btn" data-lang-set="en" aria-label="English">EN</button>
+</nav>
+
+<style>
+  .lang-switcher {
+    position: fixed;
+    top: 50%;
+    left: clamp(16px, 2vw, 26px);
+    transform: translateY(-50%);
+    z-index: 40;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .lang-head {
+    margin-bottom: 2px;
+  }
+
+  .lang-btn {
+    width: 44px;
+    padding: 8px 0;
+    background: transparent;
+    color: var(--ink-dim);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.76rem;
+    letter-spacing: 0.08em;
+    text-align: center;
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    border-radius: 0;
+    cursor: pointer;
+    image-rendering: pixelated;
+    transition: transform 100ms ease, box-shadow 100ms ease, color 140ms ease, background 140ms ease, border-color 140ms ease;
+    box-shadow:
+      3px 3px 0 0 rgba(59, 255, 142, 0.25),
+      inset 2px 2px 0 0 rgba(255, 255, 255, 0.04);
+  }
+
+  .lang-btn:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    transform: translate(1px, 1px);
+    box-shadow:
+      2px 2px 0 0 rgba(59, 255, 142, 0.45),
+      inset 2px 2px 0 0 rgba(59, 255, 142, 0.08);
+  }
+
+  .lang-btn.active {
+    background: var(--accent);
+    color: #05160c;
+    border-color: #05160c;
+    box-shadow:
+      3px 3px 0 0 #05160c,
+      inset 2px 2px 0 0 rgba(255, 255, 255, 0.3),
+      inset -2px -2px 0 0 rgba(0, 0, 0, 0.2);
+    transform: translate(0, 0);
+  }
+
+  .lang-btn.active:hover {
+    transform: translate(1px, 1px);
+    box-shadow:
+      2px 2px 0 0 #05160c,
+      inset 2px 2px 0 0 rgba(255, 255, 255, 0.3),
+      inset -2px -2px 0 0 rgba(0, 0, 0, 0.2);
+  }
+
+  @media (max-width: 900px) {
+    .lang-head {
+      display: none;
+    }
+    .lang-btn {
+      width: 38px;
+      padding: 6px 0;
+      font-size: 0.7rem;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .lang-switcher {
+      display: none;
+    }
+  }
+</style>

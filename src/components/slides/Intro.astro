@@ -1,0 +1,345 @@
+---
+import PixelStar from "../PixelStar.astro";
+import PixelEarth from "../PixelEarth.astro";
+---
+
+<section class="section hero" id="top">
+  <div class="section-inner hero-layout">
+    <div class="hero-copy">
+      <span class="hud-badge hero-status fade-up" aria-label="Estado">
+        <span class="hud-dot"></span><span data-i18n="hero.status">PLAYER 1 · ONLINE</span>
+      </span>
+      <span class="eyebrow fade-up" data-i18n="hero.eyebrow">Desarrollo de personaje</span>
+      <h1 class="fade-up mb-0">
+        Francisco <span class="glow glitch" data-text="Cavelli">Cavelli</span>.<br />
+      </h1>
+      <h2 class="fade-up subtitle" data-i18n="hero.subtitle">
+        Desarrollador fullstack
+      </h2>
+      <p class="fade-up" data-i18n="hero.paragraph">
+        Más de 3 años diseñando y manteniendo aplicaciones fullstack: desde
+        integraciones con APIs y pipelines CI/CD, hasta interfaces modernas
+        en Astro, React y Angular. Actualmente trabajo en Correo Argentino
+        y proyectos on-demand, buscando ampliar mis horizontes.
+      </p>
+      <div class="cta-row fade-up">
+        <a class="btn" href="#projects" data-i18n="hero.cta.projects">▶ Ver proyectos</a>
+        <a class="btn ghost" href="#contact" data-i18n="hero.cta.contact">Contactar</a>
+      </div>
+    </div>
+
+    <div class="hero-side fade-up">
+      <div class="hero-art" data-buddy-dock aria-hidden="true">
+        <div class="hero-deco star-1"><PixelStar size={14} variant="plus" color="#3bff8e" /></div>
+        <div class="hero-deco star-2"><PixelStar size={10} variant="sparkle" color="#ffffff" /></div>
+        <div class="hero-deco star-3"><PixelStar size={12} variant="diamond" color="#fbbf24" /></div>
+        <div class="hero-deco star-4"><PixelStar size={8} variant="plus" color="#c084fc" /></div>
+        <div class="hero-deco star-5"><PixelStar size={16} variant="sparkle" color="#3bff8e" /></div>
+
+        <div class="ring ring-1"></div>
+        <div class="ring ring-2"></div>
+        <div class="ring ring-3"></div>
+      </div>
+
+      <nav class="hero-links" aria-label="Enlaces">
+        <div class="links-head">
+          <div class="earth-base">
+            <PixelEarth size={52} rotating />
+            <div class="earth-info">
+              <span class="earth-name" data-i18n="earth.name">TIERRA · BASE</span>
+              <span class="earth-status">
+                <span class="hud-dot"></span><span data-i18n="earth.status">señal ONLINE</span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <a class="link-item" href="https://github.com/FranCavelli" target="_blank" rel="noopener">
+          <span class="li-num">01</span>
+          <span class="li-label">GITHUB</span>
+          <span class="li-arrow">▸</span>
+        </a>
+        <a class="link-item" href="https://linkedin.com/in/francisco-cavelli" target="_blank" rel="noopener">
+          <span class="li-num">02</span>
+          <span class="li-label">LINKEDIN</span>
+          <span class="li-arrow">▸</span>
+        </a>
+        <a class="link-item" href="mailto:FranCavelli@hotmail.com">
+          <span class="li-num">03</span>
+          <span class="li-label">EMAIL</span>
+          <span class="li-arrow">▸</span>
+        </a>
+        <div class="horizon" aria-hidden="true">
+          <span class="horizon-line"></span>
+          <span class="horizon-tag" data-i18n="earth.horizon">TRANSMITIENDO DESDE 34°35′ S</span>
+        </div>
+      </nav>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-top: calc(var(--nav-h) + clamp(40px, 6vh, 72px));
+    padding-bottom: clamp(48px, 8vh, 96px);
+    min-height: auto;
+  }
+
+  .hero-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr);
+    align-items: center;
+    gap: clamp(24px, 4vw, 56px);
+  }
+
+  .hero-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .hero-status {
+    align-self: flex-start;
+  }
+
+  .cta-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+
+  .hero-side {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 18px;
+    justify-self: end;
+    width: 100%;
+    max-width: 340px;
+  }
+
+  .hero-art {
+    position: relative;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1;
+    width: 100%;
+    min-height: 260px;
+  }
+
+  .hero-links {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 14px 14px 16px;
+    background: linear-gradient(160deg, #0e141c 0%, #0a0e14 100%);
+    border: 1px solid rgba(59, 255, 142, 0.25);
+    border-radius: 8px;
+    box-shadow:
+      inset 0 0 24px rgba(59, 255, 142, 0.05),
+      0 20px 40px rgba(0, 0, 0, 0.35);
+  }
+
+  .hero-links::after {
+    content: "";
+    position: absolute;
+    inset: 5px;
+    pointer-events: none;
+    background:
+      linear-gradient(var(--accent), var(--accent)) top left / 10px 1.5px no-repeat,
+      linear-gradient(var(--accent), var(--accent)) top left / 1.5px 10px no-repeat,
+      linear-gradient(var(--accent), var(--accent)) top right / 10px 1.5px no-repeat,
+      linear-gradient(var(--accent), var(--accent)) top right / 1.5px 10px no-repeat,
+      linear-gradient(var(--accent), var(--accent)) bottom left / 10px 1.5px no-repeat,
+      linear-gradient(var(--accent), var(--accent)) bottom left / 1.5px 10px no-repeat,
+      linear-gradient(var(--accent), var(--accent)) bottom right / 10px 1.5px no-repeat,
+      linear-gradient(var(--accent), var(--accent)) bottom right / 1.5px 10px no-repeat;
+    opacity: 0.7;
+  }
+
+  .links-head {
+    padding-bottom: 12px;
+    margin-bottom: 6px;
+    border-bottom: 1px dashed rgba(59, 255, 142, 0.2);
+  }
+
+  .subtitle{
+    margin-top: -1rem;
+  }
+
+  .earth-base {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .earth-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+  }
+
+  .earth-name {
+    font-family: var(--font-pixel);
+    font-size: 0.56rem;
+    letter-spacing: 0.14em;
+    color: var(--ink);
+    text-shadow: 0 0 6px rgba(59, 255, 142, 0.25);
+  }
+
+  .earth-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .horizon {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed rgba(59, 255, 142, 0.15);
+  }
+
+  .horizon-line {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(59, 255, 142, 0.5) 20%,
+      rgba(59, 255, 142, 0.5) 80%,
+      transparent 100%
+    );
+    box-shadow: 0 0 6px rgba(59, 255, 142, 0.4);
+  }
+
+  .horizon-tag {
+    font-family: var(--font-pixel);
+    font-size: 0.48rem;
+    letter-spacing: 0.14em;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+
+  .link-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 10px;
+    border-radius: 4px;
+    text-decoration: none;
+    color: var(--ink-dim);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    letter-spacing: 0.06em;
+    transition:
+      background 160ms ease,
+      color 160ms ease,
+      transform 160ms ease;
+  }
+
+  .link-item:hover {
+    background: rgba(59, 255, 142, 0.08);
+    color: var(--ink);
+    transform: translateX(2px);
+  }
+
+  .li-num {
+    font-family: var(--font-pixel);
+    font-size: 0.55rem;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+  }
+
+  .li-label {
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+
+  .li-arrow {
+    color: var(--accent);
+    font-size: 0.9rem;
+    transition: transform 160ms ease;
+  }
+
+  .link-item:hover .li-arrow {
+    transform: translateX(3px);
+  }
+
+  .hero-deco {
+    position: absolute;
+    z-index: 3;
+    animation: twinkle 2.4s ease-in-out infinite;
+  }
+  .star-1 { top: 8%; left: 12%; animation-delay: 0s; }
+  .star-2 { top: 18%; right: 10%; animation-delay: 0.6s; }
+  .star-3 { bottom: 22%; left: 6%; animation-delay: 1.1s; }
+  .star-4 { top: 50%; right: 4%; animation-delay: 1.6s; }
+  .star-5 { bottom: 8%; right: 18%; animation-delay: 0.3s; }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.35; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.15); }
+  }
+
+  .ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(59, 255, 142, 0.25);
+    pointer-events: none;
+  }
+  .ring-1 {
+    width: 72%;
+    height: 72%;
+    animation: spin 22s linear infinite;
+    border-style: dashed;
+  }
+  .ring-2 {
+    width: 90%;
+    height: 90%;
+    border-color: rgba(59, 255, 142, 0.12);
+  }
+  .ring-3 {
+    width: 58%;
+    height: 58%;
+    border-color: rgba(59, 255, 142, 0.4);
+    box-shadow: inset 0 0 40px rgba(59, 255, 142, 0.15);
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (max-width: 860px) {
+    .hero-layout {
+      grid-template-columns: 1fr;
+    }
+    .hero-side {
+      justify-self: stretch;
+      max-width: 100%;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .hero-art {
+      max-width: 220px;
+      margin: 0 auto;
+    }
+    .hero-links {
+      max-width: 340px;
+      margin: 0 auto;
+      width: 100%;
+    }
+  }
+</style>

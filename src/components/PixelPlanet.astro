@@ -1,0 +1,128 @@
+---
+interface Props {
+  size?: number;
+  variant?: "earth" | "gas" | "lava";
+}
+const { size = 80, variant = "earth" } = Astro.props;
+
+// 3 variantes de planeta pixelado. Mismo grid 16x16 (14 rows contenido + 2 padding).
+// Colores por variante abajo.
+const PATTERNS: Record<string, string[]> = {
+  earth: [
+    "....bbbbbbbb....",
+    "..bbooogggookb..",
+    ".booGgggoggooOb.",
+    "bogGGoggooggooOb",
+    "boGGoggggogGoooO",
+    "boogggooogGGoook",
+    "bgggggooogggoook",
+    "bgggoggoooogoooO",
+    "boogggogggooGOOb",
+    "bogggggoogGGGOOb",
+    ".bogggooogGGoOb.",
+    ".boooogggoooOOb.",
+    "..bOooooooOOOb..",
+    "...bbOOOooOOb...",
+    ".....bbbbbb.....",
+    "................",
+  ],
+  gas: [
+    "....bbbbbbbb....",
+    "..bbPPPPPPPPbb..",
+    ".bPPpPPPPPPpPPb.",
+    "bPPPPPPPPPPPPPPb",
+    "bnnnnnnnPPnnnnnb",
+    "bpppPPppppPPpppb",
+    "bPPPPpPPPPpPPPPb",
+    "bppnnppPPPPnnppb",
+    "bPPPpPppPPpppPPb",
+    "bpPPPPPPPPPPPPpb",
+    "bnnnnPPnnnnPPnnb",
+    "bpPPPPppppPPPPpb",
+    ".bPPpPPPPPPpPPb.",
+    "..bbPPPPPPPPbb..",
+    "....bbbbbbbb....",
+    "................",
+  ],
+  lava: [
+    "....bbbbbbbb....",
+    "..bbDDDDDDDDbb..",
+    ".bDDeDDDLDDDeDb.",
+    "bDDeDLLDDDDeDDLb",
+    "bDeLDDeeLLDDDLeb",
+    "bDDDeDLLLDDDLDeb",
+    "bDeeDDDeLLDDDeLb",
+    "bDLDLeeDDeDLLeDb",
+    "bDDeDDDLLDDLDDDb",
+    "bDLeDeeLLDDDDeLb",
+    "bDDLDDeeLDDLDDLb",
+    "bDeDDLDDeDDDLeDb",
+    ".bDDeDDLLDDeDDb.",
+    "..bbDDDDDDDDbb..",
+    "....bbbbbbbb....",
+    "................",
+  ],
+};
+
+const COLORS: Record<string, Record<string, string>> = {
+  earth: {
+    b: "#050a14",
+    o: "#2a5ea0",
+    O: "#13356a",
+    g: "#3bb06e",
+    G: "#1e7a4a",
+  },
+  gas: {
+    b: "#1a0a2e",
+    P: "#e0b8ff",
+    p: "#a86edc",
+    n: "#4a2880",
+  },
+  lava: {
+    b: "#2a0808",
+    D: "#6b1c1c",
+    e: "#d45a24",
+    L: "#fbbf24",
+  },
+};
+
+const GLOW: Record<string, string> = {
+  earth: "rgba(59, 160, 255, 0.45)",
+  gas: "rgba(168, 110, 220, 0.5)",
+  lava: "rgba(251, 191, 36, 0.5)",
+};
+
+const pixels = PATTERNS[variant];
+const palette = COLORS[variant];
+const glow = GLOW[variant];
+
+type Cell = { x: number; y: number; fill: string };
+const cells: Cell[] = [];
+pixels.forEach((row, y) => {
+  [...row].forEach((ch, x) => {
+    if (ch !== "." && palette[ch]) cells.push({ x, y, fill: palette[ch] });
+  });
+});
+
+const width = pixels[0].length;
+const height = pixels.length;
+---
+
+<svg
+  viewBox={`0 0 ${width} ${height}`}
+  shape-rendering="crispEdges"
+  class="pixel-planet"
+  style={`width:${size}px;height:${size}px;--glow:${glow}`}
+  aria-hidden="true"
+>
+  {cells.map((c) => (
+    <rect x={c.x} y={c.y} width="1" height="1" fill={c.fill} />
+  ))}
+</svg>
+
+<style>
+  .pixel-planet {
+    image-rendering: pixelated;
+    filter: drop-shadow(0 0 14px var(--glow));
+  }
+</style>

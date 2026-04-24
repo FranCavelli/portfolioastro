@@ -1,0 +1,355 @@
+---
+const channels = [
+  {
+    label: "Email",
+    value: "FranCavelli@hotmail.com",
+    href: "mailto:FranCavelli@hotmail.com",
+    icon: "📬",
+    primary: true,
+    i18n: "contact.ch.email",
+  },
+  {
+    label: "LinkedIn",
+    value: "linkedin.com/in/francisco-cavelli",
+    href: "https://linkedin.com/in/francisco-cavelli",
+    icon: "in",
+    i18n: "contact.ch.linkedin",
+  },
+  {
+    label: "GitHub",
+    value: "github.com/FranCavelli",
+    href: "https://github.com/FranCavelli",
+    icon: "gh",
+    i18n: "contact.ch.github",
+  }
+];
+---
+
+<section class="section" id="contact">
+  <div class="section-inner contact-layout">
+    <div class="contact-copy">
+      <span class="eyebrow fade-up" data-i18n="contact.eyebrow">Contacto</span>
+      <h2 class="fade-up">
+        <span data-i18n="contact.h2.a">¿Tenés un proyecto? </span><span class="glow" data-i18n="contact.h2.b">Hablemos</span><span data-i18n="contact.h2.c">.</span>
+      </h2>
+      <p class="fade-up" data-i18n="contact.paragraph">
+        Disponible para trabajos fullstack, integraciones con APIs,
+        migraciones y reestructuraciones. Respondo
+        mails en menos de 24 h o su pizza es gratis.
+        También me interesa colaborar en proyectos open-source o iniciativas
+        comunitarias relacionadas con el desarrollo web y la tecnología.
+        ¡No dudes en contactarme!
+      </p>
+
+      <ul class="channels">
+        {channels.map((c) => (
+          <li class="fade-up">
+            <a class={`channel ${c.primary ? "primary" : ""}`} href={c.href} target={c.href.startsWith("http") ? "_blank" : undefined} rel="noopener">
+              <span class="ch-icon">{c.icon}</span>
+              <span class="ch-text">
+                <span class="ch-label" data-i18n={c.i18n}>{c.label}</span>
+                <span class="ch-value">{c.value}</span>
+              </span>
+              <span class="ch-arrow">→</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <aside class="sig-card fade-up" aria-label="Tarjeta personal">
+      <div class="sig-inner" data-tilt>
+        <div class="shine"></div>
+        <header class="sig-head">
+          <span class="sig-brand">FC · 2026</span>
+          <span class="sig-serial">ID 001</span>
+        </header>
+        <div class="sig-body">
+          <div class="sig-name">Francisco Cavelli</div>
+          <div class="sig-role" data-i18n="contact.sig.role">Fullstack Developer</div>
+          <div class="sig-grid">
+            <div>
+              <span class="sig-label" data-i18n="contact.sig.main">Main</span>
+              <span class="sig-value">Laravel + Astro</span>
+            </div>
+            <div>
+              <span class="sig-label" data-i18n="contact.sig.region">Región</span>
+              <span class="sig-value">Argentina</span>
+            </div>
+            <div>
+              <span class="sig-label" data-i18n="contact.sig.exp">Exp.</span>
+              <span class="sig-value" data-i18n="contact.sig.expVal">3+ años</span>
+            </div>
+            <div>
+              <span class="sig-label" data-i18n="contact.sig.mode">Modo</span>
+              <span class="sig-value" data-i18n="contact.sig.modeVal">Remoto/Presencial</span>
+            </div>
+          </div>
+        </div>
+        <footer class="sig-foot">
+          <span data-i18n="contact.sig.available">Disponible para proyectos</span>
+          <span class="sig-chip" data-i18n="contact.sig.chip">OPEN TO WORK</span>
+        </footer>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<style>
+  .contact-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: clamp(24px, 4vw, 48px);
+    align-items: center;
+  }
+
+  .contact-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .channels {
+    list-style: none;
+    padding: 0;
+    margin: 6px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .channel {
+    position: relative;
+    display: grid;
+    grid-template-columns: 44px 1fr 20px;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    background: linear-gradient(160deg, var(--card) 0%, var(--card-2) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    text-decoration: none;
+    color: var(--ink);
+    transition: border-color 160ms ease, transform 160ms ease, background 160ms ease;
+  }
+
+  /* Gradient border sutil (igual que .card::before) */
+  .channel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius);
+    padding: 1px;
+    background: linear-gradient(160deg, rgba(59, 255, 142, 0.25), transparent 40%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0.6;
+  }
+
+  /* Corner brackets HUD (igual que .card::after) */
+  .channel::after {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    pointer-events: none;
+    background:
+      linear-gradient(var(--accent), var(--accent)) top left / 12px 1.5px no-repeat,
+      linear-gradient(var(--accent), var(--accent)) top left / 1.5px 12px no-repeat,
+      linear-gradient(var(--accent), var(--accent)) top right / 12px 1.5px no-repeat,
+      linear-gradient(var(--accent), var(--accent)) top right / 1.5px 12px no-repeat,
+      linear-gradient(var(--accent), var(--accent)) bottom left / 12px 1.5px no-repeat,
+      linear-gradient(var(--accent), var(--accent)) bottom left / 1.5px 12px no-repeat,
+      linear-gradient(var(--accent), var(--accent)) bottom right / 12px 1.5px no-repeat,
+      linear-gradient(var(--accent), var(--accent)) bottom right / 1.5px 12px no-repeat;
+    opacity: 0.45;
+    transition: opacity 200ms ease;
+  }
+
+  .channel:hover {
+    border-color: rgba(59, 255, 142, 0.4);
+    transform: translateX(3px);
+  }
+
+  .channel:hover::after {
+    opacity: 0.95;
+  }
+
+  .channel.primary {
+    background:
+      linear-gradient(120deg, rgba(59, 255, 142, 0.12), transparent 50%),
+      linear-gradient(160deg, var(--card) 0%, var(--card-2) 100%);
+    border-color: rgba(59, 255, 142, 0.35);
+  }
+
+  .ch-icon {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 1.1rem;
+    font-weight: 700;
+    border: 1px solid rgba(59, 255, 142, 0.25);
+  }
+
+  .ch-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .ch-label {
+    font-size: 0.72rem;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+
+  .ch-value {
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 0.95rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ch-arrow {
+    color: var(--ink-soft);
+    transition: color 160ms ease, transform 160ms ease;
+  }
+
+  .channel:hover .ch-arrow {
+    color: var(--accent);
+    transform: translateX(2px);
+  }
+
+  .sig-card {
+    perspective: 1200px;
+    padding: 14px 0;
+  }
+
+  .sig-inner {
+    position: relative;
+    padding: 24px;
+    border-radius: 22px;
+    background:
+      radial-gradient(600px 200px at 10% 0%, rgba(59, 255, 142, 0.2), transparent 60%),
+      linear-gradient(160deg, #13241b 0%, #0c1218 100%);
+    border: 1px solid rgba(59, 255, 142, 0.3);
+    box-shadow:
+      0 30px 80px rgba(0, 0, 0, 0.5),
+      0 0 40px rgba(59, 255, 142, 0.15);
+    overflow: hidden;
+    transform-style: preserve-3d;
+    transition: transform 160ms ease;
+  }
+
+  .shine {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(115deg, transparent 40%, rgba(255, 255, 255, 0.08) 50%, transparent 60%);
+    transform: translateX(-100%);
+    animation: shine 7s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes shine {
+    0%, 20% { transform: translateX(-100%); }
+    35%, 100% { transform: translateX(100%); }
+  }
+
+  .sig-head {
+    display: flex;
+    justify-content: space-between;
+    color: var(--ink-dim);
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+  }
+
+  .sig-brand {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .sig-serial {
+    padding: 3px 10px;
+    border: 1px solid rgba(59, 255, 142, 0.3);
+    border-radius: 999px;
+    color: var(--accent);
+  }
+
+  .sig-body {
+    margin: 18px 0;
+  }
+
+  .sig-name {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #fff;
+  }
+
+  .sig-role {
+    color: var(--accent);
+    font-size: 0.9rem;
+    margin-bottom: 14px;
+  }
+
+  .sig-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px 16px;
+  }
+
+  .sig-grid > div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .sig-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--ink-soft);
+  }
+
+  .sig-value {
+    font-size: 0.85rem;
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .sig-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 14px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.08);
+    font-size: 0.75rem;
+    color: var(--ink-dim);
+  }
+
+  .sig-chip {
+    padding: 3px 10px;
+    background: var(--accent);
+    color: #05160c;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+  }
+
+  @media (max-width: 860px) {
+    .contact-layout {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+  }
+</style>

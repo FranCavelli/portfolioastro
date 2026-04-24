@@ -1,0 +1,203 @@
+---
+---
+
+<div class="warp-overlay" data-warp aria-hidden="true">
+  <div class="warp-scan"></div>
+  <div class="warp-flash"></div>
+  <div class="warp-streaks" data-warp-streaks></div>
+  <div class="warp-text">
+    <span class="warp-bracket">&lt;</span>
+    <span class="warp-label" data-warp-label>WARP</span>
+    <span class="warp-bracket">&gt;</span>
+  </div>
+  <div class="warp-subline">
+    <span class="warp-arrow">▸</span>
+    <span>ENGAGING HYPERSPACE</span>
+    <span class="warp-arrow">◂</span>
+  </div>
+</div>
+
+<style>
+  .warp-overlay {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 300;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 120ms ease, visibility 120ms;
+  }
+  .warp-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* Radial flash */
+  .warp-flash {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at center, rgba(59, 255, 142, 0.4) 0%, transparent 55%),
+      rgba(10, 12, 16, 0.65);
+    mix-blend-mode: screen;
+    opacity: 0;
+  }
+  .warp-overlay.active .warp-flash {
+    animation: warp-flash 900ms ease-out forwards;
+  }
+  @keyframes warp-flash {
+    0%   { opacity: 0; }
+    18%  { opacity: 1; }
+    70%  { opacity: 0.55; }
+    100% { opacity: 0; }
+  }
+
+  /* Scanlines intensificadas durante el warp */
+  .warp-scan {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent 0,
+      transparent 2px,
+      rgba(59, 255, 142, 0.12) 2px,
+      rgba(59, 255, 142, 0.12) 3px
+    );
+    mix-blend-mode: screen;
+    opacity: 0;
+  }
+  .warp-overlay.active .warp-scan {
+    animation: warp-scan 900ms linear;
+  }
+  @keyframes warp-scan {
+    0%, 100% { opacity: 0; }
+    25%, 70% { opacity: 1; }
+  }
+
+  .warp-streaks {
+    position: absolute;
+    inset: 0;
+  }
+
+  /* Cada streak se genera dinámicamente con --rot, --dur, --delay */
+  .warp-streak {
+    --rot: 0deg;
+    --dur: 700ms;
+    --delay: 0ms;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 2px;
+    height: 24px;
+    background: linear-gradient(to top, transparent, #3bff8e 50%, #ffffff 80%, transparent);
+    transform-origin: center top;
+    opacity: 0;
+    filter: drop-shadow(0 0 4px #3bff8e);
+  }
+
+  .warp-overlay.active .warp-streak {
+    animation: warp-shoot var(--dur) cubic-bezier(0.3, 0, 0.7, 1) var(--delay) forwards;
+  }
+
+  @keyframes warp-shoot {
+    0% {
+      transform: translate(-50%, 0) rotate(var(--rot)) translateY(0) scaleY(0.1);
+      opacity: 0;
+    }
+    12% {
+      opacity: 1;
+      transform: translate(-50%, 0) rotate(var(--rot)) translateY(30px) scaleY(1);
+    }
+    100% {
+      transform: translate(-50%, 0) rotate(var(--rot)) translateY(130vh) scaleY(6);
+      opacity: 0;
+    }
+  }
+
+  /* Texto central con código del idioma */
+  .warp-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: clamp(2.6rem, 7vw, 5rem);
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-shadow:
+      0 0 18px rgba(59, 255, 142, 0.9),
+      0 0 42px rgba(59, 255, 142, 0.5),
+      0 4px 0 rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    white-space: nowrap;
+  }
+  .warp-overlay.active .warp-text {
+    animation: warp-text 900ms ease-out forwards;
+  }
+  @keyframes warp-text {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(1.6);
+      letter-spacing: 0.5em;
+    }
+    25% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+      letter-spacing: 0.1em;
+    }
+    75% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.85);
+    }
+  }
+
+  .warp-bracket {
+    color: var(--accent);
+    opacity: 0.55;
+  }
+
+  /* Subline con arrows y tag */
+  .warp-subline {
+    position: absolute;
+    top: calc(50% + clamp(60px, 9vw, 96px));
+    left: 50%;
+    transform: translateX(-50%);
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    font-family: var(--font-pixel);
+    font-size: 0.56rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    opacity: 0;
+    white-space: nowrap;
+  }
+  .warp-overlay.active .warp-subline {
+    animation: warp-sub 900ms ease-out forwards;
+  }
+  @keyframes warp-sub {
+    0%, 20%  { opacity: 0; transform: translateX(-50%) translateY(8px); }
+    40%, 75% { opacity: 1; transform: translateX(-50%) translateY(0); }
+    100%     { opacity: 0; transform: translateX(-50%) translateY(-4px); }
+  }
+
+  .warp-arrow {
+    color: var(--accent);
+    animation: warp-arrow-pulse 0.3s steps(2, end) infinite;
+  }
+  @keyframes warp-arrow-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+</style>

@@ -1,0 +1,520 @@
+---
+import PixelPlanet from "../PixelPlanet.astro";
+
+const jobs = [
+  {
+    company: "Correo Argentino",
+    role: "Desarrollador Fullstack · Full time",
+    period: "Ene 2025 — Presente",
+    location: "Remoto · Argentina",
+    worldName: "Orbital-CA",
+    color: "#3bff8e",
+    variant: "earth" as const,
+    stack: ["PHP", "Laravel", "Angular", "Docker", "OpenShift", "CI/CD"],
+    bullets: [
+      "Desarrollo de nuevas funcionalidades, reportes y mejoras sobre el sistema principal, integrando lógica de negocio con la API interna.",
+      "Adaptación de flujos y procesos clave a integraciones con AFIP, cumpliendo requerimientos normativos.",
+      "Participación en la infraestructura con Docker, OpenShift y pipelines CI/CD para automatizar despliegue y entorno de desarrollo.",
+    ],
+  },
+  {
+    company: "Alter Estudio",
+    role: "Desarrollador CMS · On-demand",
+    period: "Ene 2025 — Presente",
+    location: "Remoto · Argentina",
+    worldName: "Neo-Alter",
+    color: "#c084fc",
+    variant: "gas" as const,
+    stack: ["WordPress", "Hotmart", "Tienda Nube", "Hostinger"],
+    bullets: [
+      "Diseño desde cero de landing pages y e-commerce sobre stack CMS.",
+      "Implementaciones con WordPress, Hotmart, Tienda Nube y Hostinger, cubriendo todo el ciclo de publicación.",
+    ],
+  },
+  {
+    company: "Infocontrol",
+    role: "Desarrollador Fullstack · Full time",
+    period: "Jun 2023 — Ene 2025",
+    location: "Remoto · Argentina",
+    worldName: "Base-IC",
+    color: "#fbbf24",
+    variant: "lava" as const,
+    stack: ["PHP", "TypeScript", "MySQL", "AFIP", "REST"],
+    bullets: [
+      "Lideré al equipo de desarrollo brindando orientación en buenas prácticas de programación y estándares de calidad.",
+      "Coordiné el equipo de soporte minimizando tiempos de respuesta ante incidencias críticas.",
+      "Desarrollé vistas y métodos desde cero con una arquitectura limpia y escalable.",
+      "Implementé integraciones con APIs externas (AFIP entre otras) para automatizar procesos y mejorar la eficiencia del sistema.",
+    ],
+  },
+];
+---
+
+<section class="section experience-section" id="experience">
+  <div class="starfield" aria-hidden="true"></div>
+
+  <div class="section-inner">
+    <span class="eyebrow fade-up" data-i18n="exp.eyebrow">Experiencia · Bitácora de viaje</span>
+    <h2 class="fade-up">
+      <span data-i18n="exp.h2.a">Aterrizajes en </span><span class="glow" data-i18n="exp.h2.b">distintos mundos</span><span data-i18n="exp.h2.c">.</span>
+    </h2>
+    <p class="fade-up" data-i18n="exp.paragraph">
+      Cada planeta, una misión distinta: un stack, un equipo, un sistema que
+      sostener en producción.
+    </p>
+
+    <div class="journey" data-journey>
+      <div class="launcher" aria-hidden="true">
+        <svg viewBox="0 0 40 64" class="rocket-svg">
+          <defs>
+            <linearGradient id="rocketBody" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#f5fffa" />
+              <stop offset="100%" stop-color="#9fb3a8" />
+            </linearGradient>
+            <linearGradient id="flame" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#3bff8e" />
+              <stop offset="50%" stop-color="#fbbf24" />
+              <stop offset="100%" stop-color="transparent" />
+            </linearGradient>
+          </defs>
+          <path class="flame" d="M14 48 L20 64 L26 48 Q26 56 20 56 Q14 56 14 48 Z" fill="url(#flame)" />
+          <path d="M20 2 Q30 10 30 28 L30 48 L10 48 L10 28 Q10 10 20 2 Z" fill="url(#rocketBody)" stroke="#3bff8e" stroke-width="1" />
+          <circle cx="20" cy="22" r="5" fill="#0a0c10" stroke="#3bff8e" stroke-width="1.5" />
+          <circle cx="20" cy="22" r="2" fill="#3bff8e" />
+          <path d="M10 42 L4 52 L10 48 Z" fill="#3bff8e" />
+          <path d="M30 42 L36 52 L30 48 Z" fill="#3bff8e" />
+        </svg>
+        <span class="launcher-tag" data-i18n="exp.launcher">AHORA · 2026</span>
+      </div>
+
+      <div class="trail" aria-hidden="true">
+        <span class="puff puff-1"></span>
+        <span class="puff puff-2"></span>
+        <span class="puff puff-3"></span>
+      </div>
+
+      <ol class="worlds">
+        {
+          jobs.map((job, i) => (
+            <li class="world" data-side={i % 2 === 0 ? "left" : "right"} data-world>
+              <div class="planet-wrap">
+                <div class="planet" style={`--planet-color:${job.color}`} data-planet>
+                  <div class="planet-glow" />
+                  <div class="planet-ring" />
+                  <div class="planet-sprite">
+                    <PixelPlanet size={80} variant={job.variant} />
+                  </div>
+                </div>
+                <span class="planet-tag" style={`--planet-color:${job.color}`}>
+                  {job.worldName}
+                </span>
+              </div>
+
+              <article class="world-card fade-up">
+                <header class="world-head">
+                  <div>
+                    <h3>{job.company}</h3>
+                    <div class="world-meta">{job.role}</div>
+                  </div>
+                  <div class="world-time">
+                    <span class="period" style={`color:${job.color}`}>{job.period}</span>
+                    <span class="location">{job.location}</span>
+                  </div>
+                </header>
+
+                <ul class="bullets">
+                  {job.bullets.map((b) => <li>{b}</li>)}
+                </ul>
+
+                <div class="stack-row">
+                  {job.stack.map((s) => <span class="tag">{s}</span>)}
+                </div>
+              </article>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .experience-section {
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(900px 500px at 50% 10%, rgba(59, 255, 142, 0.05), transparent 60%),
+      linear-gradient(to bottom, #080a10 0%, #0a0c10 100%);
+  }
+
+  .starfield {
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 20% 10%, rgba(255, 255, 255, 0.6), transparent 50%),
+      radial-gradient(1px 1px at 70% 18%, rgba(255, 255, 255, 0.4), transparent 50%),
+      radial-gradient(1.5px 1.5px at 45% 30%, rgba(59, 255, 142, 0.8), transparent 50%),
+      radial-gradient(1px 1px at 85% 40%, rgba(255, 255, 255, 0.5), transparent 50%),
+      radial-gradient(1px 1px at 15% 55%, rgba(255, 255, 255, 0.35), transparent 50%),
+      radial-gradient(1.5px 1.5px at 60% 65%, rgba(192, 132, 252, 0.6), transparent 50%),
+      radial-gradient(1px 1px at 92% 75%, rgba(255, 255, 255, 0.5), transparent 50%),
+      radial-gradient(1px 1px at 25% 82%, rgba(251, 191, 36, 0.6), transparent 50%),
+      radial-gradient(1px 1px at 50% 92%, rgba(255, 255, 255, 0.4), transparent 50%);
+    opacity: 0.8;
+    pointer-events: none;
+  }
+
+  .journey {
+    position: relative;
+    margin-top: 24px;
+    padding: 96px 0 72px;
+  }
+
+  .launcher {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    z-index: 4;
+    pointer-events: none;
+  }
+
+  .rocket-svg {
+    width: 32px;
+    height: 52px;
+    filter: drop-shadow(0 0 14px rgba(59, 255, 142, 0.55));
+  }
+
+  .rocket-svg .flame {
+    transform-origin: center top;
+    animation: flame-flicker 0.22s ease-in-out infinite alternate;
+  }
+
+  @keyframes flame-flicker {
+    0% {
+      transform: scaleY(0.9) scaleX(0.95);
+      opacity: 0.9;
+    }
+    100% {
+      transform: scaleY(1.15) scaleX(1.05);
+      opacity: 1;
+    }
+  }
+
+  .launcher-tag {
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    font-weight: 700;
+    color: var(--accent);
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: rgba(10, 12, 16, 0.7);
+    border: 1px solid rgba(59, 255, 142, 0.35);
+    backdrop-filter: blur(4px);
+    white-space: nowrap;
+  }
+
+  .trail {
+    position: absolute;
+    top: 68px;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    transform: translateX(-50%);
+    z-index: 1;
+    pointer-events: none;
+    background-image: linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 6px,
+      rgba(220, 228, 235, 0.55) 6px,
+      rgba(220, 228, 235, 0.55) 12px
+    );
+    background-size: 100% 12px;
+    filter: blur(0.6px);
+    mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 82%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 82%, transparent 100%);
+    animation: smoke-drift 2.4s linear infinite;
+  }
+
+  @keyframes smoke-drift {
+    from {
+      background-position: 0 0;
+    }
+    to {
+      background-position: 0 12px;
+    }
+  }
+
+  .puff {
+    position: absolute;
+    left: 50%;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(220, 228, 235, 0.22) 0%, transparent 70%);
+    filter: blur(4px);
+    transform: translateX(-50%);
+    animation: puff-drift 6s ease-in-out infinite;
+  }
+  .puff-1 {
+    top: 12%;
+    animation-delay: 0s;
+  }
+  .puff-2 {
+    top: 48%;
+    animation-delay: 1.8s;
+    width: 38px;
+    height: 38px;
+  }
+  .puff-3 {
+    top: 80%;
+    animation-delay: 3.4s;
+  }
+
+  @keyframes puff-drift {
+    0%, 100% {
+      transform: translate(-50%, 0);
+      opacity: 0.6;
+    }
+    50% {
+      transform: translate(calc(-50% + 10px), 14px);
+      opacity: 0.9;
+    }
+  }
+
+  .worlds {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .world {
+    display: grid;
+    grid-template-columns: 1fr 140px 1fr;
+    align-items: center;
+    gap: 0;
+  }
+
+  .world[data-side="left"] .world-card {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .world[data-side="left"] .planet-wrap {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .world[data-side="right"] .world-card {
+    grid-column: 3;
+    grid-row: 1;
+  }
+  .world[data-side="right"] .planet-wrap {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .planet-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    justify-self: center;
+  }
+
+  .planet {
+    --planet-color: #3bff8e;
+    position: relative;
+    width: 96px;
+    height: 96px;
+    display: grid;
+    place-items: center;
+    transition: transform 400ms cubic-bezier(0.2, 1.2, 0.3, 1);
+  }
+
+  .planet-sprite {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    line-height: 0;
+  }
+
+  .planet-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 110px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1.5px solid var(--planet-color);
+    opacity: 0.45;
+    transform: translate(-50%, -50%) rotate(-18deg);
+    z-index: 1;
+  }
+
+  .planet-glow {
+    position: absolute;
+    inset: -14px;
+    border-radius: 50%;
+    background: radial-gradient(circle, color-mix(in oklab, var(--planet-color) 30%, transparent) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 400ms ease;
+    z-index: 0;
+  }
+
+  .planet.is-active .planet-glow {
+    opacity: 1;
+  }
+
+  .planet.is-active {
+    transform: scale(1.06);
+  }
+
+  .planet-tag {
+    --planet-color: #3bff8e;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--planet-color);
+    padding: 4px 10px;
+    border: 1px solid color-mix(in oklab, var(--planet-color) 40%, transparent);
+    border-radius: 999px;
+    background: rgba(10, 12, 16, 0.6);
+    backdrop-filter: blur(4px);
+    white-space: nowrap;
+  }
+
+  .world-card {
+    background: linear-gradient(160deg, var(--card) 0%, var(--card-2) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius);
+    padding: clamp(18px, 2.4vw, 26px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    position: relative;
+  }
+
+  .world[data-side="left"] .world-card {
+    margin-right: 20px;
+  }
+  .world[data-side="right"] .world-card {
+    margin-left: 20px;
+  }
+
+  .world-card::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 20px;
+    height: 2px;
+    background: linear-gradient(to right, transparent, rgba(59, 255, 142, 0.4));
+    transform: translateY(-50%);
+  }
+  .world[data-side="left"] .world-card::after {
+    right: -20px;
+  }
+  .world[data-side="right"] .world-card::after {
+    left: -20px;
+    background: linear-gradient(to left, transparent, rgba(59, 255, 142, 0.4));
+  }
+
+  .world-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 14px;
+  }
+
+  .world-meta {
+    color: var(--ink-dim);
+    font-size: 0.9rem;
+    margin-top: 4px;
+  }
+
+  .world-time {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+    font-size: 0.82rem;
+    text-align: right;
+  }
+
+  .period {
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  .location {
+    color: var(--ink-soft);
+  }
+
+  .bullets {
+    margin: 0 0 14px;
+    padding: 0 0 0 1.1rem;
+    color: var(--ink-dim);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .bullets li::marker {
+    color: var(--accent);
+  }
+
+  .stack-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  @media (max-width: 860px) {
+    .world {
+      grid-template-columns: 90px 1fr;
+    }
+    .world[data-side="left"] .world-card,
+    .world[data-side="right"] .world-card {
+      grid-column: 2;
+      grid-row: 1;
+      margin: 0;
+    }
+    .world[data-side="left"] .planet-wrap,
+    .world[data-side="right"] .planet-wrap {
+      grid-column: 1;
+      grid-row: 1;
+    }
+    .world-card::after {
+      left: -16px !important;
+      right: auto !important;
+      background: linear-gradient(to left, transparent, rgba(59, 255, 142, 0.4)) !important;
+    }
+    .trail {
+      left: 45px;
+    }
+    .launcher {
+      left: 45px;
+    }
+    .puff {
+      left: 45px;
+    }
+    .world-head {
+      flex-direction: column;
+      gap: 6px;
+    }
+    .world-time {
+      flex-direction: row;
+      align-items: center;
+      gap: 10px;
+      text-align: left;
+    }
+  }
+</style>

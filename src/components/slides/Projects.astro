@@ -1,0 +1,154 @@
+---
+const projects = [
+  {
+    name: "Stock & GPS Tracking",
+    tag: "Proyecto principal",
+    description:
+      "Aplicación fullstack para gestión de inventario y logística: registro de clientes, productos, usuarios y revendedores, con seguimiento GPS en tiempo real y reportes exportables.",
+    stack: ["Laravel", "Next.js", "MySQL", "Docker"],
+    href: "https://github.com/FranCavelli",
+    featured: true,
+  },
+  {
+    name: "LeagueStatus",
+    tag: "Integración API",
+    description:
+      "Dashboard construido con Astro que consume la RIOT API para mostrar estadísticas y estado del perfil de un invocador. Buen caso de SSR + fetching tipado.",
+    stack: ["Astro", "TypeScript", "RIOT API"],
+    href: "https://github.com/FranCavelli/LeagueStatus",
+  },
+  {
+    name: "ThreeJS Models",
+    tag: "3D · WebGL",
+    description:
+      "Cuatro escenas interactivas en Three.js explorando materiales, iluminación y controles de cámara. Base sólida para experimentos 3D en la web.",
+    stack: ["Three.js", "JavaScript", "WebGL"],
+    href: "https://github.com/FranCavelli/threejs-models",
+  },
+  {
+    name: "CSGO Store",
+    tag: "E-commerce",
+    description:
+      "Tienda temática con catálogo dinámico construida sobre Astro, enfocada en performance y SEO a través de content collections.",
+    stack: ["Astro", "TypeScript", "CSS"],
+    href: "https://github.com/FranCavelli/csgostoreAstro",
+  },
+  {
+    name: "NTVG Guess Song",
+    tag: "Juego interactivo",
+    description:
+      "Mini juego en TypeScript para adivinar canciones de No Te Va Gustar. Lógica de scoring, manejo de audio y UI reactiva.",
+    stack: ["TypeScript", "Vite", "Web Audio"],
+    href: "https://github.com/FranCavelli/ntvgguesssong",
+  },
+  {
+    name: "CMS Works",
+    tag: "Portfolio CMS",
+    description:
+      "Colección de sitios y landings construidos sobre WordPress, Hotmart, Tienda Nube, Shopify y Wix para clientes reales.",
+    stack: ["WordPress", "Shopify", "Tienda Nube"],
+    href: "https://github.com/FranCavelli/CMS_works",
+  },
+];
+---
+
+<section class="section" id="projects">
+  <div class="section-inner">
+    <span class="eyebrow fade-up" data-i18n="projects.eyebrow">Proyectos seleccionados</span>
+    <h2 class="fade-up"><span data-i18n="projects.h2.a">Código que </span><span class="glow" data-i18n="projects.h2.b">mostrar</span><span data-i18n="projects.h2.c">.</span></h2>
+    <p class="fade-up" data-i18n="projects.paragraph">
+      Seleccionados por arquitectura, integraciones interesantes o
+      decisiones de stack que valen la pena revisar.
+    </p>
+
+    <div class="projects-grid">
+      {projects.map((p) => (
+        <a
+          class={`card project fade-up ${p.featured ? "featured" : ""}`}
+          href={p.href}
+          target="_blank"
+          rel="noopener"
+        >
+          <div class="project-head">
+            <span class="pill">{p.tag}</span>
+            <svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+              <path d="M7 17L17 7" />
+              <path d="M9 7h8v8" />
+            </svg>
+          </div>
+          <h3>{p.name}</h3>
+          <p>{p.description}</p>
+          <div class="stack-row">
+            {p.stack.map((s) => <span class="tag">{s}</span>)}
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <div class="more fade-up">
+      <a class="btn ghost" href="https://github.com/FranCavelli" target="_blank" rel="noopener" data-i18n="projects.more">
+        Ver todos en GitHub →
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  .project {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    color: inherit;
+    text-decoration: none;
+    transition: transform 180ms ease, border-color 180ms ease;
+  }
+
+  .project:hover {
+    transform: translateY(-4px);
+  }
+  .project:hover .arrow {
+    color: var(--accent);
+    transform: translate(2px, -2px);
+  }
+
+  .project.featured {
+    grid-column: span 2;
+    background: linear-gradient(160deg, #152a1e 0%, var(--card-2) 100%);
+  }
+
+  @media (max-width: 720px) {
+    .project.featured {
+      grid-column: span 1;
+    }
+  }
+
+  .project-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .arrow {
+    color: var(--ink-dim);
+    transition: color 160ms ease, transform 160ms ease;
+  }
+
+  .stack-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+  }
+
+  .more {
+    display: flex;
+    justify-content: center;
+    margin-top: 8px;
+  }
+</style>

@@ -1,0 +1,45 @@
+---
+interface Props {
+  size?: number;
+}
+const { size = 120 } = Astro.props;
+---
+
+<svg
+  width={size}
+  height={size}
+  viewBox="0 0 200 200"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  aria-hidden="true"
+  class="nelly"
+>
+  <defs>
+    <radialGradient id="nellyGlow" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#3bff8e" stop-opacity="0.55" />
+      <stop offset="100%" stop-color="#3bff8e" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="nellyBody" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5BFFA2" />
+      <stop offset="100%" stop-color="#10B97A" />
+    </linearGradient>
+  </defs>
+  <circle cx="100" cy="100" r="90" fill="url(#nellyGlow)" />
+  <path
+    d="M60 120c0-22 18-40 40-40s40 18 40 40v18c0 6-5 10-10 10H70c-5 0-10-4-10-10v-18z"
+    fill="url(#nellyBody)"
+  />
+  <circle cx="85" cy="108" r="6" fill="#0a0c10" />
+  <circle cx="115" cy="108" r="6" fill="#0a0c10" />
+  <path d="M92 128c3 3 13 3 16 0" stroke="#0a0c10" stroke-width="3" stroke-linecap="round" fill="none" />
+  <ellipse cx="75" cy="120" rx="5" ry="3" fill="#ff9fb8" opacity="0.6" />
+  <ellipse cx="125" cy="120" rx="5" ry="3" fill="#ff9fb8" opacity="0.6" />
+  <path d="M100 80v-14" stroke="#3bff8e" stroke-width="3" stroke-linecap="round" />
+  <circle cx="100" cy="62" r="5" fill="#3bff8e" />
+</svg>
+
+<style>
+  .nelly {
+    filter: drop-shadow(0 10px 30px rgba(59, 255, 142, 0.35));
+  }
+</style>

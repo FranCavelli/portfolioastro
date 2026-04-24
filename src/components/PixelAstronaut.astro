@@ -1,0 +1,166 @@
+---
+interface Props {
+  size?: number;
+  floating?: boolean;
+}
+const { size = 160, floating = true } = Astro.props;
+
+// Pixel map 16x20 con shading tipo 16-bit. Luz desde arriba-izquierda.
+// Paleta (14 colores):
+//   .  → vacío
+//   O  → outline oscuro
+//   W  → traje blanco bright
+//   w  → traje blanco shadow
+//   V  → visor verde bright
+//   v  → visor verde dark
+//   H  → highlight blanco visor
+//   h  → highlight mid verde claro
+//   A  → panel pecho dark
+//   a  → panel pecho shadow
+//   S  → pantalla HUD glow
+//   B  → cinturón dark
+//   b  → cinturón highlight/hebilla
+//   T  → bota dark
+//   t  → bota mid
+const pixels = [
+  "....OOOOOOOO....",
+  "..OOWWWWWWwwOO..",
+  ".OWWWWWWWWwwwwO.",
+  ".OWWVVVVVVVVwwO.",
+  "OWWVHhVVVVVVvvwO",
+  "OWWVVVVVVVVVvvwO",
+  ".OWWVVVVVvvvwwO.",
+  ".OWWWWWWWwwwwwO.",
+  "..OOWWWWWwwwOO..",
+  ".OWWOWWWWWWOwwO.",
+  "OWWWOAAAaaaOWwwO",
+  "OWWWOAHSSaaOWwwO",
+  "OWWWOAaaaaaOWwwO",
+  "OWWWWWWWWWwwwwwO",
+  ".OWWWBBBbbBBwwO.",
+  "..OOOOOOOOOOOO..",
+  "..OWWO....OwwO..",
+  "..OWWO....OwwO..",
+  "..OTTO....OttO..",
+  "..OOOO....OOOO..",
+];
+
+const COLORS: Record<string, string> = {
+  O: "#06130b",
+  W: "#f4fff8",
+  w: "#b0c2b8",
+  V: "#3bff8e",
+  v: "#0f8a42",
+  H: "#ffffff",
+  h: "#b8ffd0",
+  A: "#0b1015",
+  a: "#1e2a2f",
+  S: "#3bff8e",
+  B: "#2a3440",
+  b: "#6b7c88",
+  T: "#1a2028",
+  t: "#3a4550",
+};
+
+type Cell = { x: number; y: number; fill: string };
+const cells: Cell[] = [];
+pixels.forEach((row, y) => {
+  [...row].forEach((ch, x) => {
+    if (ch !== "." && COLORS[ch]) {
+      cells.push({ x, y, fill: COLORS[ch] });
+    }
+  });
+});
+
+const width = pixels[0].length;
+const height = pixels.length;
+---
+
+<div class:list={["astronaut-wrap", { floating }]} style={`--size:${size}px`}>
+  <div class="glow-ring"></div>
+  <svg
+    viewBox={`0 0 ${width} ${height}`}
+    class="astronaut"
+    shape-rendering="crispEdges"
+    aria-hidden="true"
+  >
+    {cells.map((c) => (
+      <rect x={c.x} y={c.y} width="1" height="1" fill={c.fill} />
+    ))}
+  </svg>
+  <div class="floor-shadow"></div>
+</div>
+
+<style>
+  .astronaut-wrap {
+    --size: 160px;
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: var(--size);
+    height: calc(var(--size) * 1.25);
+  }
+
+  .astronaut {
+    width: 100%;
+    height: auto;
+    position: relative;
+    z-index: 2;
+    filter:
+      drop-shadow(0 0 18px rgba(59, 255, 142, 0.35))
+      drop-shadow(0 6px 0 rgba(0, 0, 0, 0.35));
+    image-rendering: pixelated;
+  }
+
+  .astronaut-wrap.floating .astronaut {
+    animation: float 4s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  .glow-ring {
+    position: absolute;
+    inset: 6% 6% 14% 6%;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      rgba(59, 255, 142, 0.22) 0%,
+      transparent 65%
+    );
+    z-index: 1;
+    animation: pulse-glow 3.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 0.75;
+    }
+    50% {
+      transform: scale(1.08);
+      opacity: 1;
+    }
+  }
+
+  .floor-shadow {
+    position: absolute;
+    bottom: 4%;
+    width: 60%;
+    height: 10px;
+    border-radius: 50%;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(59, 255, 142, 0.35) 0%,
+      transparent 70%
+    );
+    filter: blur(3px);
+    z-index: 0;
+  }
+</style>

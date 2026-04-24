@@ -1,0 +1,147 @@
+---
+const sections = [
+  { id: "top", label: "Inicio", short: "01", i18n: "dots.home" },
+  { id: "experience", label: "Experiencia", short: "02", i18n: "dots.experience" },
+  { id: "about", label: "Sobre mí", short: "03", i18n: "dots.about" },
+  { id: "projects", label: "Proyectos", short: "04", i18n: "dots.projects" },
+  { id: "skills", label: "Stack", short: "05", i18n: "dots.skills" },
+  { id: "contact", label: "Contacto", short: "06", i18n: "dots.contact" },
+];
+---
+
+<nav class="side-dots" aria-label="Navegación de secciones">
+  <ul>
+    {
+      sections.map((s) => (
+        <li>
+          <a href={`#${s.id}`} data-side-dot={s.id} aria-label={s.label} data-i18n-aria={s.i18n}>
+            <span class="dot-label">
+              <span class="dot-num">{s.short}</span>
+              <span class="dot-sep">·</span>
+              <span data-i18n={s.i18n}>{s.label}</span>
+            </span>
+            <span class="dot-marker" />
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<style>
+  .side-dots {
+    position: fixed;
+    top: 50%;
+    right: clamp(16px, 2vw, 26px);
+    transform: translateY(-50%);
+    z-index: 40;
+  }
+
+  .side-dots ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .side-dots a {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--ink-dim);
+    padding: 2px 0;
+    position: relative;
+  }
+
+  .dot-marker {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1.5px solid rgba(255, 255, 255, 0.18);
+    transition:
+      transform 220ms cubic-bezier(0.2, 1.2, 0.3, 1),
+      background 220ms ease,
+      border-color 220ms ease,
+      box-shadow 220ms ease;
+    flex-shrink: 0;
+  }
+
+  .dot-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    background: rgba(10, 12, 16, 0.75);
+    border: 1px solid rgba(59, 255, 142, 0.2);
+    border-radius: 4px;
+    color: var(--accent);
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateX(6px);
+    transition: opacity 220ms ease, transform 220ms ease;
+    pointer-events: none;
+    backdrop-filter: blur(6px);
+  }
+
+  .dot-num {
+    font-family: var(--font-pixel);
+    font-size: 0.55rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.08em;
+  }
+
+  .dot-sep {
+    color: var(--ink-soft);
+    opacity: 0.6;
+  }
+
+  .side-dots a:hover .dot-marker {
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 10px var(--accent);
+    transform: scale(1.1);
+  }
+
+  .side-dots a:hover .dot-label {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .side-dots a.active .dot-marker {
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 14px var(--accent);
+    width: 22px;
+    border-radius: 3px;
+  }
+
+  .side-dots a.active .dot-label {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  @media (max-width: 900px) {
+    .dot-label {
+      display: none;
+    }
+    .side-dots a.active .dot-marker {
+      width: 10px;
+      height: 18px;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .side-dots {
+      display: none;
+    }
+  }
+</style>

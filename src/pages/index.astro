@@ -1,0 +1,524 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import SideDots from "../components/SideDots.astro";
+import LangSwitcher from "../components/LangSwitcher.astro";
+import WarpOverlay from "../components/WarpOverlay.astro";
+import FloatingAstronaut from "../components/FloatingAstronaut.astro";
+import Hero from "../components/slides/Intro.astro";
+import About from "../components/slides/About.astro";
+import Experience from "../components/slides/Experience.astro";
+import Projects from "../components/slides/Projects.astro";
+import Skills from "../components/slides/TechStack.astro";
+import Contact from "../components/slides/FinalCard.astro";
+---
+
+<Layout>
+  <Navbar />
+  <SideDots />
+  <LangSwitcher />
+  <WarpOverlay />
+  <FloatingAstronaut />
+
+  <main>
+    <Hero />
+    <Experience />
+    <About />
+    <Projects />
+    <Skills />
+    <Contact />
+  </main>
+
+  <footer class="site-footer">
+    <div class="foot-inner">
+      <span>© {new Date().getFullYear()} Francisco Cavelli</span>
+      <span class="foot-sep">·</span>
+      <span data-i18n="footer.built">Construido con Astro + GSAP</span>
+    </div>
+  </footer>
+
+  <button class="to-top" id="to-top" aria-label="Volver arriba">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+      <path d="M12 19V5" />
+      <path d="M5 12l7-7 7 7" />
+    </svg>
+  </button>
+</Layout>
+
+<style>
+  .site-footer {
+    padding: 28px clamp(20px, 5vw, 56px) 36px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    color: var(--ink-soft);
+    font-size: 0.85rem;
+    background: rgba(10, 12, 16, 0.4);
+  }
+  .foot-inner {
+    max-width: 1120px;
+    margin: 0 auto;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .foot-sep {
+    opacity: 0.5;
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import Lenis from "lenis";
+  import { applyLang, getLang, type Lang } from "../scripts/i18n";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // === Idioma con warp drive ===
+  applyLang(getLang());
+
+  let isWarping = false;
+
+  const triggerWarp = (onMid: () => void) => {
+    const overlay = document.querySelector<HTMLElement>("[data-warp]");
+    const container = document.querySelector<HTMLElement>("[data-warp-streaks]");
+    if (!overlay || !container) {
+      onMid();
+      return;
+    }
+
+    // Generar streaks dinámicamente con rotación, duración y delay random
+    container.innerHTML = "";
+    const count = 72;
+    for (let i = 0; i < count; i++) {
+      const s = document.createElement("span");
+      s.className = "warp-streak";
+      const rot = Math.random() * 360;
+      const dur = 520 + Math.random() * 380;
+      const delay = Math.random() * 180;
+      s.style.setProperty("--rot", `${rot}deg`);
+      s.style.setProperty("--dur", `${dur}ms`);
+      s.style.setProperty("--delay", `${delay}ms`);
+      container.appendChild(s);
+    }
+
+    overlay.classList.add("active");
+    window.setTimeout(onMid, 380); // swap texto en el pico del warp
+    window.setTimeout(() => overlay.classList.remove("active"), 1000);
+  };
+
+  document.querySelectorAll<HTMLButtonElement>("[data-lang-set]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      if (isWarping) return;
+      const lang = btn.dataset.langSet as Lang;
+      const current = getLang();
+      if (!lang || lang === current) return;
+
+      isWarping = true;
+      const warpLabel = document.querySelector<HTMLElement>("[data-warp-label]");
+      if (warpLabel) warpLabel.textContent = lang.toUpperCase();
+
+      triggerWarp(() => applyLang(lang));
+      window.setTimeout(() => (isWarping = false), 1050);
+    });
+  });
+
+  // === Smooth scroll con Lenis, integrado con GSAP ticker ===
+  const lenis = new Lenis({
+    duration: 1.15,
+    easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smoothWheel: true,
+    wheelMultiplier: 1,
+    touchMultiplier: 1.4,
+  });
+
+  lenis.on("scroll", ScrollTrigger.update);
+  gsap.ticker.add((time) => lenis.raf(time * 1000));
+  gsap.ticker.lagSmoothing(0);
+
+  const NAV_OFFSET = -68;
+
+  // Todos los anchors internos se manejan vía Lenis con offset de navbar
+  document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((a) => {
+    a.addEventListener("click", (e) => {
+      const href = a.getAttribute("href");
+      if (!href || href === "#") return;
+      const target = href === "#top" ? 0 : document.querySelector(href);
+      if (target === null) return;
+      e.preventDefault();
+      lenis.scrollTo(target as Element | number, { offset: NAV_OFFSET });
+    });
+  });
+
+  const allFadeUps = document.querySelectorAll<HTMLElement>(".fade-up");
+  gsap.set(allFadeUps, { opacity: 0, y: 24 });
+
+  const sections = document.querySelectorAll<HTMLElement>("main > section");
+
+  sections.forEach((section) => {
+    const targets = section.querySelectorAll<HTMLElement>(".fade-up");
+    if (!targets.length) return;
+
+    gsap.to(targets, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power3.out",
+      stagger: 0.08,
+      scrollTrigger: {
+        trigger: section,
+        start: "top 85%",
+        toggleActions: "play none none none",
+        once: true,
+      },
+    });
+  });
+
+  // Safety net: si pasaron 3s y algo sigue oculto por cualquier razón, lo revelamos.
+  setTimeout(() => {
+    allFadeUps.forEach((el) => {
+      if (getComputedStyle(el).opacity === "0") {
+        gsap.to(el, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" });
+      }
+    });
+  }, 3000);
+
+  // Refresh de ScrollTrigger después de que fuentes/imágenes terminen de cargar
+  // (evita medidas mal calculadas que dejen triggers rotos).
+  window.addEventListener("load", () => ScrollTrigger.refresh());
+
+  // === Astronauta único: dock en el hero, vuela al costado al scrollear ===
+  const buddy = document.querySelector<HTMLElement>("[data-buddy]");
+  const buddyInner = document.querySelector<HTMLElement>("[data-buddy-inner]");
+  const buddyClick = document.querySelector<HTMLElement>("[data-buddy-click]");
+  const dock = document.querySelector<HTMLElement>("[data-buddy-dock]");
+
+  if (buddy && buddyInner && dock) {
+    const BUDDY_W = 200;
+    const BUDDY_H = 250;
+    const COMPANION_SCALE = 0.42;
+    const PAD = 28;
+
+    type Lane = "right" | "left" | "hidden";
+    let currentLane: Lane = "right";
+    let mode: "hero" | "companion" = "hero";
+    let spinning = false;
+    let isReady = false;
+    let isTraveling = false;
+    let travelTimer: number | null = null;
+
+    const xTo = gsap.quickTo(buddy, "x", { duration: 0.8, ease: "power3.out" });
+    const yTo = gsap.quickTo(buddy, "y", { duration: 0.8, ease: "power3.out" });
+    const scaleTo = gsap.quickTo(buddy, "scale", { duration: 0.8, ease: "power3.out" });
+
+    const getDockPos = () => {
+      const r = dock.getBoundingClientRect();
+      if (r.width < 40 || r.height < 40) {
+        // Fallback si el dock aún no tiene dimensiones reales
+        const vw = window.innerWidth;
+        return { x: Math.max(0, vw - 320), y: 140, scale: 1 };
+      }
+      return {
+        x: r.left + r.width / 2 - BUDDY_W / 2,
+        y: r.top + r.height / 2 - BUDDY_H / 2,
+        scale: 1,
+      };
+    };
+
+    const getCompanionPos = () => {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const halfW = (BUDDY_W * COMPANION_SCALE) / 2;
+      const halfH = (BUDDY_H * COMPANION_SCALE) / 2;
+      let cx = 0;
+      if (currentLane === "right") cx = vw - PAD - halfW;
+      else if (currentLane === "left") cx = PAD + halfW;
+      else cx = vw + BUDDY_W;
+      const cy = vh - PAD - halfH - 60;
+      return {
+        x: cx - BUDDY_W / 2,
+        y: cy - BUDDY_H / 2,
+        scale: COMPANION_SCALE,
+      };
+    };
+
+    const triggerTravel = (goingRight: boolean) => {
+      isTraveling = true;
+      buddy.classList.remove("travel-left", "travel-right");
+      buddy.classList.add(goingRight ? "travel-right" : "travel-left");
+
+      gsap.timeline({
+        overwrite: "rotation",
+        onComplete: () => {
+          isTraveling = false;
+          buddy.classList.remove("travel-left", "travel-right");
+        },
+      })
+        .to(buddyInner, {
+          rotation: goingRight ? 22 : -22,
+          duration: 0.28,
+          ease: "power2.out",
+        })
+        .to(
+          buddyInner,
+          {
+            rotation: 0,
+            duration: 0.55,
+            ease: "power3.out",
+          },
+          "+=0.35",
+        );
+
+      if (travelTimer) window.clearTimeout(travelTimer);
+      travelTimer = window.setTimeout(() => {
+        buddy.classList.remove("travel-left", "travel-right");
+      }, 1100);
+    };
+
+    const updateBuddy = () => {
+      if (!isReady) return;
+      const target = mode === "hero" ? getDockPos() : getCompanionPos();
+
+      // Detectar movimiento lateral significativo para disparar banking + thrust
+      const currentX = (gsap.getProperty(buddy, "x") as number) || 0;
+      const deltaX = target.x - currentX;
+      if (Math.abs(deltaX) > 90 && !spinning) {
+        triggerTravel(deltaX > 0);
+      }
+
+      xTo(target.x);
+      yTo(target.y);
+      scaleTo(target.scale);
+    };
+
+    // Arranca el idle bob siempre
+    gsap.to(buddyInner, {
+      y: -7,
+      duration: 1.6,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+    });
+
+    const setupBuddy = () => {
+      if (isReady) return;
+      const initial = getDockPos();
+      gsap.set(buddy, { x: initial.x, y: initial.y, scale: initial.scale });
+      gsap.to(buddy, { opacity: 1, duration: 0.5 });
+      isReady = true;
+      ScrollTrigger.refresh();
+    };
+
+    // Intento temprano + reintento al terminar de cargar fonts/assets
+    requestAnimationFrame(() => requestAnimationFrame(setupBuddy));
+    if (document.readyState === "complete") {
+      setupBuddy();
+    } else {
+      window.addEventListener("load", () => setupBuddy());
+    }
+    if ("fonts" in document) {
+      (document as any).fonts.ready.then(() => {
+        setupBuddy();
+        updateBuddy();
+      });
+    }
+
+    // Seguir el dock mientras el hero esté en pantalla
+    ScrollTrigger.create({
+      trigger: "#top",
+      start: "top top",
+      end: "bottom 40%",
+      onUpdate: () => {
+        if (mode === "hero") updateBuddy();
+      },
+    });
+
+    // Cambio a companion cuando el hero sale y de vuelta cuando entra
+    ScrollTrigger.create({
+      trigger: "#experience",
+      start: "top 70%",
+      onEnter: () => {
+        mode = "companion";
+        buddy.classList.add("is-companion");
+        updateBuddy();
+      },
+      onLeaveBack: () => {
+        mode = "hero";
+        buddy.classList.remove("is-companion");
+        updateBuddy();
+      },
+    });
+
+    // Lanes por sección (Experience ahora va primero: hidden para dar lugar al cohete)
+    const sectionLanes: Record<string, Lane> = {
+      experience: "hidden",
+      about: "right",
+      projects: "left",
+      skills: "right",
+      contact: "right",
+    };
+    Object.entries(sectionLanes).forEach(([id, lane]) => {
+      const section = document.getElementById(id);
+      if (!section) return;
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top 60%",
+        end: "bottom 40%",
+        onToggle: (self) => {
+          if (self.isActive) {
+            currentLane = lane;
+            if (mode === "companion") updateBuddy();
+          }
+        },
+      });
+    });
+
+    // Tilt + boost trail según velocidad
+    let boostTimer: number | null = null;
+    let idleTimer: number | null = null;
+    lenis.on("scroll", (e: { velocity: number }) => {
+      if (spinning || isTraveling) return;
+      const v = e.velocity || 0;
+      const tilt = Math.max(-22, Math.min(22, v * 0.08));
+      gsap.to(buddyInner, {
+        rotation: tilt,
+        duration: 0.35,
+        ease: "power2.out",
+        overwrite: "rotation",
+      });
+
+      if (Math.abs(v) > 40) {
+        buddy.classList.add("is-boosting");
+        buddy.classList.toggle("boosting-up", v < 0);
+        if (boostTimer) window.clearTimeout(boostTimer);
+        boostTimer = window.setTimeout(() => {
+          buddy.classList.remove("is-boosting");
+          buddy.classList.remove("boosting-up");
+        }, 160);
+      }
+
+      if (idleTimer) window.clearTimeout(idleTimer);
+      idleTimer = window.setTimeout(() => {
+        if (!spinning && !isTraveling) {
+          gsap.to(buddyInner, { rotation: 0, duration: 0.6, ease: "power2.out" });
+        }
+      }, 200);
+    });
+
+    // Click → spin
+    buddyClick?.addEventListener("click", () => {
+      if (spinning) return;
+      spinning = true;
+      gsap.to(buddyInner, {
+        rotation: "+=360",
+        duration: 0.8,
+        ease: "power2.inOut",
+        overwrite: "rotation",
+        onComplete: () => {
+          spinning = false;
+          gsap.set(buddyInner, { rotation: 0 });
+        },
+      });
+    });
+
+    window.addEventListener("resize", () => updateBuddy());
+  }
+
+  // === Experiencia: planetas se encienden al entrar en viewport ===
+  const planets = document.querySelectorAll<HTMLElement>("[data-planet]");
+  planets.forEach((planet) => {
+    ScrollTrigger.create({
+      trigger: planet,
+      start: "top 70%",
+      end: "bottom 30%",
+      onEnter: () => planet.classList.add("is-active"),
+      onEnterBack: () => planet.classList.add("is-active"),
+      onLeave: () => planet.classList.remove("is-active"),
+      onLeaveBack: () => planet.classList.remove("is-active"),
+    });
+  });
+
+  const sigCard = document.querySelector<HTMLElement>(".sig-inner");
+  if (sigCard) {
+    gsap.from(sigCard, {
+      rotateY: -20,
+      rotateX: 10,
+      scale: 0.85,
+      opacity: 0,
+      duration: 1.1,
+      ease: "power4.out",
+      scrollTrigger: {
+        trigger: sigCard,
+        start: "top 80%",
+        toggleActions: "play none none none",
+      },
+    });
+
+    sigCard.addEventListener("mousemove", (e) => {
+      const r = sigCard.getBoundingClientRect();
+      const dx = (e.clientX - (r.left + r.width / 2)) / r.width;
+      const dy = (e.clientY - (r.top + r.height / 2)) / r.height;
+      gsap.to(sigCard, {
+        rotateY: dx * 12,
+        rotateX: -dy * 12,
+        duration: 0.4,
+        ease: "power2.out",
+      });
+    });
+    sigCard.addEventListener("mouseleave", () => {
+      gsap.to(sigCard, { rotateY: 0, rotateX: 0, duration: 0.8, ease: "power3.out" });
+    });
+  }
+
+  const navLinks = document.querySelectorAll<HTMLAnchorElement>(".nav-links a[data-nav]");
+  const byId = new Map<string, HTMLAnchorElement>();
+  navLinks.forEach((a) => {
+    const id = a.getAttribute("data-nav");
+    if (id) byId.set(id, a);
+  });
+
+  // Side dots
+  const sideDots = document.querySelectorAll<HTMLAnchorElement>("[data-side-dot]");
+  const sideById = new Map<string, HTMLAnchorElement>();
+  sideDots.forEach((a) => {
+    const id = a.getAttribute("data-side-dot");
+    if (id) sideById.set(id, a);
+  });
+
+  const sectionIds = ["top", "about", "experience", "projects", "skills", "contact"];
+  sectionIds.forEach((id) => {
+    const section = document.getElementById(id);
+    if (!section) return;
+    ScrollTrigger.create({
+      trigger: section,
+      start: "top 45%",
+      end: "bottom 45%",
+      onToggle: (self) => {
+        if (!self.isActive) return;
+        navLinks.forEach((a) => a.classList.remove("active"));
+        byId.get(id)?.classList.add("active");
+        sideDots.forEach((a) => a.classList.remove("active"));
+        sideById.get(id)?.classList.add("active");
+      },
+    });
+  });
+
+  const toTop = document.getElementById("to-top");
+  if (toTop) {
+    toTop.addEventListener("click", () => {
+      lenis.scrollTo(0);
+    });
+
+    ScrollTrigger.create({
+      start: 400,
+      end: "max",
+      onUpdate: (self) => {
+        if (self.progress > 0) {
+          toTop.classList.add("visible");
+        } else {
+          toTop.classList.remove("visible");
+        }
+      },
+    });
+  }
+</script>

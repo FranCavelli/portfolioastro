@@ -1,0 +1,160 @@
+---
+const facts = [
+  { label: "EXP", value: "3+ años fullstack", key: "exp" },
+  { label: "REGIÓN", value: "Argentina", key: "region" },
+  { label: "CLASE", value: "Ing. Informática · UNNOBA", key: "class" },
+  { label: "IDIOMAS", value: "ES nativo · EN intermedio", key: "lang" },
+] as const;
+---
+
+<section class="section" id="about">
+  <div class="section-inner about-layout">
+    <div class="about-copy">
+      <span class="eyebrow fade-up" data-i18n="about.eyebrow">Sobre mí</span>
+      <h2 class="fade-up" data-i18n="about.h2">
+        Desarrollo producto end-to-end, con foco en que el sistema siga
+        andando el lunes a las 9.
+      </h2>
+      <p class="fade-up" data-i18n="about.p1">
+        Soy desarrollador de software con más de 3 años de experiencia en
+        proyectos fullstack. Lideré reestructuraciones de sistemas y
+        maquetación de interfaces modernas. Implementé facturación
+        electrónica mediante la API de AFIP en diversas organizaciones.
+      </p>
+      <p class="fade-up" data-i18n="about.p2">
+        También coordiné el área de soporte, resolviendo y asignando
+        incidencias críticas con foco en tiempos de respuesta óptimos.
+        Hoy divido mi tiempo entre Correo Argentino y proyectos CMS on-demand.
+      </p>
+    </div>
+
+    <aside class="stats-panel fade-up" aria-label="Estadísticas del jugador">
+      <header class="stats-head">
+        <span class="hud-badge">
+          <span class="hud-dot"></span><span data-i18n="about.stats.label">STATS</span>
+        </span>
+        <span class="stats-serial">ID · 001</span>
+      </header>
+      <div class="stats-rows">
+        {facts.map((f) => (
+          <div class="stat-row">
+            <span class="stat-key" data-i18n={`about.stats.key.${f.key}`}>{f.label}</span>
+            <span class="stat-val" data-i18n={`about.stats.val.${f.key}`}>{f.value}</span>
+          </div>
+        ))}
+      </div>
+      <footer class="stats-foot">
+        <span data-i18n="about.stats.ready">&gt;&gt; READY</span>
+      </footer>
+    </aside>
+  </div>
+</section>
+
+<style>
+  .about-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    gap: clamp(24px, 4vw, 48px);
+    align-items: start;
+  }
+
+  .about-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .stats-panel {
+    background: linear-gradient(160deg, #0e141c 0%, #0a0e14 100%);
+    border: 1px solid rgba(59, 255, 142, 0.25);
+    border-radius: 8px;
+    padding: 18px;
+    font-family: var(--font-mono);
+    position: relative;
+    box-shadow:
+      inset 0 0 24px rgba(59, 255, 142, 0.06),
+      0 20px 40px rgba(0, 0, 0, 0.4);
+  }
+
+  .stats-panel::after {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    pointer-events: none;
+    background:
+      linear-gradient(var(--accent), var(--accent)) top left / 14px 1.5px no-repeat,
+      linear-gradient(var(--accent), var(--accent)) top left / 1.5px 14px no-repeat,
+      linear-gradient(var(--accent), var(--accent)) top right / 14px 1.5px no-repeat,
+      linear-gradient(var(--accent), var(--accent)) top right / 1.5px 14px no-repeat,
+      linear-gradient(var(--accent), var(--accent)) bottom left / 14px 1.5px no-repeat,
+      linear-gradient(var(--accent), var(--accent)) bottom left / 1.5px 14px no-repeat,
+      linear-gradient(var(--accent), var(--accent)) bottom right / 14px 1.5px no-repeat,
+      linear-gradient(var(--accent), var(--accent)) bottom right / 1.5px 14px no-repeat;
+    opacity: 0.8;
+  }
+
+  .stats-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+    border-bottom: 1px dashed rgba(59, 255, 142, 0.2);
+  }
+
+  .stats-serial {
+    color: var(--ink-soft);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+  }
+
+  .stats-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .stat-row {
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    gap: 12px;
+    align-items: center;
+    padding: 4px 0;
+  }
+
+  .stat-key {
+    color: var(--accent);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    font-weight: 700;
+    position: relative;
+  }
+
+  .stat-key::after {
+    content: "›";
+    margin-left: 6px;
+    color: var(--ink-soft);
+  }
+
+  .stat-val {
+    color: var(--ink);
+    font-size: 0.88rem;
+  }
+
+  .stats-foot {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px dashed rgba(59, 255, 142, 0.2);
+    color: var(--accent);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    animation: caret-blink 1.6s steps(2, end) infinite;
+  }
+
+  @media (max-width: 860px) {
+    .about-layout {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+  }
+</style>

@@ -1,0 +1,41 @@
+---
+const links = [
+  { id: "experience", label: "Experiencia", i18n: "nav.experience" },
+  { id: "about", label: "Sobre mí", i18n: "nav.about" },
+  { id: "projects", label: "Proyectos", i18n: "nav.projects" },
+  { id: "skills", label: "Stack", i18n: "nav.skills" },
+];
+---
+
+<header class="navbar" role="banner">
+  <div class="navbar-inner">
+    <a class="brand" href="#top">
+      <span class="brand-dot"></span>
+      <span class="brand-name">Francisco Cavelli</span>
+      <span class="hud-badge player-badge" aria-hidden="true">
+        <span class="hud-dot"></span>P1
+      </span>
+    </a>
+    <nav class="nav-links" aria-label="Navegación principal">
+      {links.map((l) => (
+        <a href={`#${l.id}`} data-nav={l.id} data-i18n={l.i18n}>{l.label}</a>
+      ))}
+    </nav>
+    <a class="nav-cta" href="#contact" data-i18n="nav.cta">Start →</a>
+  </div>
+</header>
+
+<style>
+  .brand-name {
+    letter-spacing: 0.05em;
+  }
+  .player-badge {
+    font-size: 0.5rem !important;
+    padding: 3px 7px !important;
+  }
+  @media (max-width: 540px) {
+    .player-badge {
+      display: none;
+    }
+  }
+</style>

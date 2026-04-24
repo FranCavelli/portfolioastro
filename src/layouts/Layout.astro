@@ -1,0 +1,44 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Francisco Cavelli — Portfolio",
+  description = "Portfolio de Francisco Cavelli, desarrollador fullstack. Proyectos, stack y experiencia en formato retro-space.",
+} = Astro.props;
+
+const base = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : import.meta.env.BASE_URL + "/";
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0a0c10" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+    <link rel="preconnect" href="https://rsms.me/" />
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bungee&family=Bungee+Inline&family=Pixelify+Sans:wght@400;500;600;700&family=Silkscreen:wght@400;700&family=Press+Start+2P&family=Space+Mono:wght@400;700&family=VT323&display=swap"
+    />
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot />
+    <style is:global>
+      @import "../styles/global.css";
+    </style>
+  </body>
+</html>

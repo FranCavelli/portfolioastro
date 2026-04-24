@@ -1,0 +1,168 @@
+---
+import PixelAstronaut from "./PixelAstronaut.astro";
+---
+
+<div class="buddy" data-buddy>
+  <button class="buddy-click" data-buddy-click type="button" aria-label="Astronauta">
+    <div class="buddy-trail" data-buddy-trail aria-hidden="true"></div>
+    <div class="buddy-thrust buddy-thrust-left" aria-hidden="true"></div>
+    <div class="buddy-thrust buddy-thrust-right" aria-hidden="true"></div>
+    <div class="buddy-inner" data-buddy-inner>
+      <PixelAstronaut size={200} floating={false} />
+    </div>
+    <span class="buddy-tip" aria-hidden="true">click me</span>
+  </button>
+</div>
+
+<style>
+  .buddy {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 250px;
+    z-index: 30;
+    opacity: 0;
+    pointer-events: none;
+    will-change: transform, opacity;
+    /* Fallback: si GSAP no lo posiciona a tiempo, al menos aparece centrado a la derecha */
+    transform: translate3d(calc(100vw - 260px), 120px, 0);
+  }
+
+  .buddy-click {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: none;
+    position: relative;
+    display: block;
+    cursor: pointer;
+    pointer-events: auto;
+    appearance: none;
+    color: inherit;
+  }
+
+  .buddy-inner {
+    width: 100%;
+    height: 100%;
+    will-change: transform;
+    transform-origin: 50% 55%;
+    display: grid;
+    place-items: center;
+  }
+
+  .buddy-trail {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 14px;
+    height: 22px;
+    clip-path: polygon(50% 0, 0 100%, 100% 100%);
+    background: linear-gradient(
+      to bottom,
+      rgba(59, 255, 142, 0) 0%,
+      rgba(59, 255, 142, 0.9) 45%,
+      rgba(251, 191, 36, 1) 100%
+    );
+    opacity: 0;
+    filter: blur(0.5px) drop-shadow(0 0 8px rgba(59, 255, 142, 0.9));
+    transition: opacity 160ms ease;
+    pointer-events: none;
+  }
+  .buddy.is-boosting .buddy-trail {
+    opacity: 1;
+    animation: trail-flicker 0.12s steps(2, end) infinite;
+  }
+  .buddy.boosting-up .buddy-trail {
+    top: auto;
+    bottom: -12px;
+    transform: translateX(-50%) scaleY(-1);
+  }
+  @keyframes trail-flicker {
+    0%, 100% { transform: translateX(-50%) scaleY(1); }
+    50% { transform: translateX(-50%) scaleY(0.85); }
+  }
+  .buddy.boosting-up .buddy-trail { animation: none; }
+
+  /* Propulsión lateral cuando cambia de carril */
+  .buddy-thrust {
+    position: absolute;
+    top: 52%;
+    width: 52px;
+    height: 26px;
+    transform: translateY(-50%);
+    opacity: 0;
+    filter: blur(0.8px) drop-shadow(0 0 10px rgba(59, 255, 142, 0.9));
+    transition: opacity 160ms ease;
+    pointer-events: none;
+  }
+  .buddy-thrust-left {
+    right: 100%;
+    margin-right: -14px;
+    clip-path: polygon(0 50%, 100% 0, 100% 100%);
+    background: linear-gradient(
+      to left,
+      #ffffff 0%,
+      #3bff8e 35%,
+      #fbbf24 75%,
+      rgba(251, 191, 36, 0) 100%
+    );
+  }
+  .buddy-thrust-right {
+    left: 100%;
+    margin-left: -14px;
+    clip-path: polygon(100% 50%, 0 0, 0 100%);
+    background: linear-gradient(
+      to right,
+      #ffffff 0%,
+      #3bff8e 35%,
+      #fbbf24 75%,
+      rgba(251, 191, 36, 0) 100%
+    );
+  }
+  .buddy.travel-right .buddy-thrust-left {
+    opacity: 1;
+    animation: thrust-pulse 0.1s steps(2, end) infinite;
+  }
+  .buddy.travel-left .buddy-thrust-right {
+    opacity: 1;
+    animation: thrust-pulse 0.1s steps(2, end) infinite;
+  }
+  @keyframes thrust-pulse {
+    0%, 100% { transform: translateY(-50%) scaleX(1); }
+    50% { transform: translateY(-50%) scaleX(0.82); }
+  }
+
+  .buddy-tip {
+    position: absolute;
+    top: -18px;
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    font-family: var(--font-pixel);
+    font-size: 0.52rem;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    background: rgba(10, 12, 16, 0.85);
+    padding: 4px 8px;
+    border-radius: 3px;
+    border: 1px solid rgba(59, 255, 142, 0.35);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 180ms ease, transform 180ms ease;
+    pointer-events: none;
+  }
+  .buddy.is-companion:hover .buddy-tip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  @media (max-width: 720px) {
+    .buddy {
+      /* En mobile ocultamos, el layout del hero ya no deja espacio */
+      display: none;
+    }
+  }
+</style>
