@@ -84,7 +84,7 @@ const jobs = [
           <path d="M10 42 L4 52 L10 48 Z" fill="#3bff8e" />
           <path d="M30 42 L36 52 L30 48 Z" fill="#3bff8e" />
         </svg>
-        <span class="launcher-tag" data-i18n="exp.launcher">AHORA · 2026</span>
+        <span class="launcher-tag" data-i18n="exp.launcher">AHORA · {new Date().getFullYear()}</span>
       </div>
 
       <div class="trail" aria-hidden="true">
@@ -191,7 +191,7 @@ const jobs = [
 
   .rocket-svg .flame {
     transform-origin: center top;
-    animation: flame-flicker 0.22s ease-in-out infinite alternate;
+    animation: flame-flicker 1s ease-in-out infinite alternate;
   }
 
   @keyframes flame-flicker {
