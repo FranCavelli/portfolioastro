@@ -7,7 +7,10 @@
       "Bash(npm install *)",
       "Bash(npm run *)",
       "Bash(curl -s http://localhost:4321/ -o \"C:/Users/FranC/OneDrive/Escritorio/porfolioastroc/dist/_rendered.html\")",
-      "Bash(curl -s http://localhost:4321/)"
+      "Bash(curl -s http://localhost:4321/)",
+      "Bash(taskkill /F /IM node.exe)",
+      "Bash(exit 0)",
+      "Bash(taskkill *)"
     ]
   }
 }

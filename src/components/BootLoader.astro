@@ -1,0 +1,190 @@
+---
+---
+
+<div class="boot-loader" data-boot aria-hidden="true">
+  <div class="boot-scan"></div>
+  <div class="boot-vignette"></div>
+
+  <div class="boot-inner">
+    <div class="boot-header">
+      <span class="boot-dot boot-dot--red"></span>
+      <span class="boot-dot boot-dot--yellow"></span>
+      <span class="boot-dot boot-dot--green"></span>
+      <span class="boot-title">CAVELLI-OS v2026</span>
+    </div>
+
+    <div class="boot-log" data-boot-log></div>
+
+    <div class="boot-bar" aria-hidden="true">
+      <div class="boot-bar-fill" data-boot-fill></div>
+    </div>
+    <div class="boot-bar-meta">
+      <span data-boot-pct>0%</span>
+      <span class="boot-bar-cursor">█</span>
+    </div>
+
+    <div class="boot-footer">
+      <span class="boot-arrow">▸</span>
+      <span>PRESS ANY KEY TO SKIP</span>
+      <span class="boot-arrow">◂</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .boot-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 400;
+    background: #05070a;
+    color: var(--accent);
+    font-family: var(--font-terminal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: opacity 380ms ease;
+  }
+  .boot-loader.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .boot-scan {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent 0,
+      transparent 2px,
+      rgba(59, 255, 142, 0.08) 2px,
+      rgba(59, 255, 142, 0.08) 3px
+    );
+    mix-blend-mode: screen;
+  }
+  .boot-vignette {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 45%, rgba(0, 0, 0, 0.85) 100%);
+  }
+
+  .boot-inner {
+    width: min(680px, 90vw);
+    padding: 22px 26px 20px;
+    border: 1px solid rgba(59, 255, 142, 0.3);
+    background: rgba(10, 14, 18, 0.6);
+    box-shadow:
+      0 0 60px rgba(59, 255, 142, 0.15),
+      inset 0 0 30px rgba(59, 255, 142, 0.08);
+    position: relative;
+    z-index: 2;
+  }
+
+  .boot-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(59, 255, 142, 0.2);
+    margin-bottom: 16px;
+    font-family: var(--font-silkscreen);
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .boot-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+  .boot-dot--red { background: #ff6b6b; }
+  .boot-dot--yellow { background: #ffd93b; }
+  .boot-dot--green { background: #3bff8e; }
+  .boot-title {
+    margin-left: auto;
+    color: var(--accent);
+    opacity: 0.85;
+  }
+
+  .boot-log {
+    font-family: var(--font-terminal);
+    font-size: clamp(1rem, 2.4vw, 1.2rem);
+    line-height: 1.5;
+    color: var(--accent);
+    margin: 0;
+    white-space: pre-wrap;
+    text-shadow: 0 0 6px rgba(59, 255, 142, 0.45);
+    min-height: 220px;
+  }
+  .boot-log .ok {
+    color: #8fffbf;
+    margin-left: 4px;
+  }
+  .boot-log .ready {
+    color: #8fffbf;
+  }
+
+  .boot-bar {
+    margin-top: 16px;
+    height: 14px;
+    border: 1px solid rgba(59, 255, 142, 0.4);
+    background: rgba(59, 255, 142, 0.05);
+    position: relative;
+    overflow: hidden;
+  }
+  .boot-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: repeating-linear-gradient(
+      90deg,
+      #3bff8e 0 8px,
+      #00d463 8px 12px
+    );
+    transition: width 180ms linear;
+    box-shadow: 0 0 18px rgba(59, 255, 142, 0.6);
+  }
+
+  .boot-bar-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 6px;
+    font-family: var(--font-silkscreen);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+  }
+  .boot-bar-cursor {
+    animation: boot-blink 0.6s steps(2) infinite;
+  }
+  @keyframes boot-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  .boot-footer {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(59, 255, 142, 0.2);
+    font-family: var(--font-silkscreen);
+    font-size: 0.6rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+  }
+  .boot-arrow {
+    animation: boot-arrow 0.4s steps(2, end) infinite;
+  }
+  @keyframes boot-arrow {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  html.is-booting {
+    overflow: hidden;
+  }
+</style>

@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar.astro";
 import SideDots from "../components/SideDots.astro";
 import LangSwitcher from "../components/LangSwitcher.astro";
 import WarpOverlay from "../components/WarpOverlay.astro";
+import BootLoader from "../components/BootLoader.astro";
 import FloatingAstronaut from "../components/FloatingAstronaut.astro";
 import Hero from "../components/slides/Intro.astro";
 import About from "../components/slides/About.astro";
@@ -14,6 +15,7 @@ import Contact from "../components/slides/FinalCard.astro";
 ---
 
 <Layout>
+  <BootLoader />
   <Navbar />
   <SideDots />
   <LangSwitcher />
@@ -135,6 +137,86 @@ import Contact from "../components/slides/FinalCard.astro";
   lenis.on("scroll", ScrollTrigger.update);
   gsap.ticker.add((time) => lenis.raf(time * 1000));
   gsap.ticker.lagSmoothing(0);
+
+  // === Boot sequence (siempre; en visitas repetidas corre en fast-mode) ===
+  const bootEl = document.querySelector<HTMLElement>("[data-boot]");
+  const BOOT_KEY = "boot:visited";
+  const fastMode = sessionStorage.getItem(BOOT_KEY) === "1";
+
+  if (!bootEl) {
+    // Nada que hacer
+  } else {
+    lenis.stop();
+    document.documentElement.classList.add("is-booting");
+
+    const logEl = bootEl.querySelector<HTMLElement>("[data-boot-log]")!;
+    const fillEl = bootEl.querySelector<HTMLElement>("[data-boot-fill]")!;
+    const pctEl = bootEl.querySelector<HTMLElement>("[data-boot-pct]")!;
+
+    type BootLine = { text: string; pct: number; ok?: boolean; ready?: boolean };
+    const lines: BootLine[] = [
+      { text: "> BOOTING CAVELLI-OS v2026...", pct: 8 },
+      { text: "> LOADING KERNEL............ ", pct: 22, ok: true },
+      { text: "> MOUNTING ASSETS........... ", pct: 42, ok: true },
+      { text: "> INITIALIZING GSAP ENGINE.. ", pct: 60, ok: true },
+      { text: "> CONNECTING TO SIGNAL...... ", pct: 80, ok: true },
+      { text: "> LOADING PORTFOLIO......... ", pct: 100, ok: true },
+      { text: "> SYSTEM READY. ENGAGING WARP...", pct: 100, ready: true },
+    ];
+
+    let skipped = fastMode;
+    const onSkip = () => { skipped = true; };
+    window.addEventListener("keydown", onSkip, { once: true });
+    bootEl.addEventListener("click", onSkip, { once: true });
+
+    const wait = (ms: number) =>
+      new Promise<void>((res) => window.setTimeout(res, skipped ? Math.min(ms, 10) : ms));
+
+    const typeLine = async (line: BootLine) => {
+      const row = document.createElement("div");
+      const textSpan = document.createElement("span");
+      if (line.ready) textSpan.className = "ready";
+      row.appendChild(textSpan);
+      logEl.appendChild(row);
+      for (let i = 0; i < line.text.length; i++) {
+        textSpan.textContent = line.text.slice(0, i + 1);
+        await wait(14);
+      }
+      if (line.ok) {
+        const okSpan = document.createElement("span");
+        okSpan.className = "ok";
+        okSpan.textContent = "[ OK ]";
+        row.appendChild(okSpan);
+      }
+    };
+
+    const runBoot = async () => {
+      for (const line of lines) {
+        await typeLine(line);
+        fillEl.style.width = `${line.pct}%`;
+        pctEl.textContent = `${line.pct}%`;
+        await wait(line.ready ? 260 : 130);
+      }
+      await wait(160);
+    };
+
+    runBoot().then(() => {
+      sessionStorage.setItem(BOOT_KEY, "1");
+      window.removeEventListener("keydown", onSkip);
+
+      // Warp de salida: al pico del warp ocultamos el loader
+      triggerWarp(() => {
+        bootEl.classList.add("is-hidden");
+      });
+
+      window.setTimeout(() => {
+        bootEl.remove();
+        document.documentElement.classList.remove("is-booting");
+        lenis.start();
+        ScrollTrigger.refresh();
+      }, 900);
+    });
+  }
 
   const NAV_OFFSET = -68;
 
