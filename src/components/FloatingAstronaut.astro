@@ -159,10 +159,6 @@ import PixelAstronaut from "./PixelAstronaut.astro";
     transform: translateX(-50%) translateY(0);
   }
 
-  @media (max-width: 720px) {
-    .buddy {
-      /* En mobile ocultamos, el layout del hero ya no deja espacio */
-      display: none;
-    }
-  }
+  /* En mobile el astronauta queda anclado al dock del hero (sin modo companion).
+     La lógica está en src/pages/index.astro, detectando el breakpoint en JS. */
 </style>

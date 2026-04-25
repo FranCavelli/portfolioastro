@@ -276,6 +276,7 @@ import Contact from "../components/slides/FinalCard.astro";
   const dock = document.querySelector<HTMLElement>("[data-buddy-dock]");
 
   if (buddy && buddyInner && dock) {
+    const isMobile = window.matchMedia("(max-width: 720px)").matches;
     const BUDDY_W = 200;
     const BUDDY_H = 250;
     const COMPANION_SCALE = 0.42;
@@ -405,55 +406,62 @@ import Contact from "../components/slides/FinalCard.astro";
       });
     }
 
-    // Seguir el dock mientras el hero esté en pantalla
-    ScrollTrigger.create({
-      trigger: "#top",
-      start: "top top",
-      end: "bottom 40%",
-      onUpdate: () => {
-        if (mode === "hero") updateBuddy();
-      },
-    });
-
-    // Cambio a companion cuando el hero sale y de vuelta cuando entra
-    ScrollTrigger.create({
-      trigger: "#experience",
-      start: "top 70%",
-      onEnter: () => {
-        mode = "companion";
-        buddy.classList.add("is-companion");
-        updateBuddy();
-      },
-      onLeaveBack: () => {
-        mode = "hero";
-        buddy.classList.remove("is-companion");
-        updateBuddy();
-      },
-    });
-
-    // Lanes por sección (Experience ahora va primero: hidden para dar lugar al cohete)
-    const sectionLanes: Record<string, Lane> = {
-      experience: "hidden",
-      about: "right",
-      projects: "left",
-      skills: "right",
-      contact: "right",
-    };
-    Object.entries(sectionLanes).forEach(([id, lane]) => {
-      const section = document.getElementById(id);
-      if (!section) return;
+    if (isMobile) {
+      // En mobile el astronauta se queda anclado al dock del hero durante todo
+      // el scroll: sin modo companion, sin cambios de carril. Sigue al dock vía
+      // getBoundingClientRect, así sale de pantalla al scrollear y reaparece al volver.
+      lenis.on("scroll", () => updateBuddy());
+    } else {
+      // Seguir el dock mientras el hero esté en pantalla
       ScrollTrigger.create({
-        trigger: section,
-        start: "top 60%",
+        trigger: "#top",
+        start: "top top",
         end: "bottom 40%",
-        onToggle: (self) => {
-          if (self.isActive) {
-            currentLane = lane;
-            if (mode === "companion") updateBuddy();
-          }
+        onUpdate: () => {
+          if (mode === "hero") updateBuddy();
         },
       });
-    });
+
+      // Cambio a companion cuando el hero sale y de vuelta cuando entra
+      ScrollTrigger.create({
+        trigger: "#experience",
+        start: "top 70%",
+        onEnter: () => {
+          mode = "companion";
+          buddy.classList.add("is-companion");
+          updateBuddy();
+        },
+        onLeaveBack: () => {
+          mode = "hero";
+          buddy.classList.remove("is-companion");
+          updateBuddy();
+        },
+      });
+
+      // Lanes por sección (Experience ahora va primero: hidden para dar lugar al cohete)
+      const sectionLanes: Record<string, Lane> = {
+        experience: "hidden",
+        about: "right",
+        projects: "left",
+        skills: "right",
+        contact: "right",
+      };
+      Object.entries(sectionLanes).forEach(([id, lane]) => {
+        const section = document.getElementById(id);
+        if (!section) return;
+        ScrollTrigger.create({
+          trigger: section,
+          start: "top 60%",
+          end: "bottom 40%",
+          onToggle: (self) => {
+            if (self.isActive) {
+              currentLane = lane;
+              if (mode === "companion") updateBuddy();
+            }
+          },
+        });
+      });
+    }
 
     // Tilt + boost trail según velocidad
     let boostTimer: number | null = null;
