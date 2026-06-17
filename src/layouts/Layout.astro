@@ -26,13 +26,37 @@ const base = import.meta.env.BASE_URL.endsWith("/")
     <meta property="og:type" content="website" />
     <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
     <link rel="preconnect" href="https://rsms.me/" />
-    <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Fuentes sin bloquear el render: bajan con media="print" (no bloquean)
+         y un script inline las activa al cargar; el texto aparece de inmediato
+         con la fallback gracias a display=swap. -->
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Bungee&family=Bungee+Inline&family=Pixelify+Sans:wght@400;500;600;700&family=Silkscreen:wght@400;700&family=Press+Start+2P&family=Space+Mono:wght@400;700&family=VT323&display=swap"
+      href="https://rsms.me/inter/inter.css"
+      media="print"
+      data-async-font
     />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&family=Silkscreen:wght@400;700&family=Press+Start+2P&family=Space+Mono:wght@400;700&family=VT323&display=swap"
+      media="print"
+      data-async-font
+    />
+    <script is:inline>
+      document.querySelectorAll("link[data-async-font]").forEach((l) => {
+        if (l.sheet) l.media = "all";
+        else l.addEventListener("load", () => (l.media = "all"));
+      });
+    </script>
+    <noscript>
+      <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&family=Silkscreen:wght@400;700&family=Press+Start+2P&family=Space+Mono:wght@400;700&family=VT323&display=swap"
+      />
+    </noscript>
     <title>{title}</title>
   </head>
   <body>
