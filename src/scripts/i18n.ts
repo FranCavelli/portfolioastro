@@ -7,6 +7,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "nav.about": "Sobre mí",
     "nav.projects": "Proyectos",
     "nav.skills": "Stack",
+    "nav.blog": "Bitácora",
     "nav.cta": "Start →",
 
     // SideDots
@@ -21,7 +22,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "hero.eyebrow": "Desarrollo de personaje",
     "hero.subtitle": "Desarrollador fullstack",
     "hero.paragraph":
-      "Más de 3 años diseñando y manteniendo aplicaciones fullstack: desde integraciones con APIs y pipelines CI/CD, hasta interfaces modernas en Astro, React y Angular. Actualmente trabajo en Correo Argentino y proyectos on-demand, buscando ampliar mis horizontes.",
+      "Más de 4 años diseñando y manteniendo aplicaciones fullstack: desde integraciones con APIs y pipelines CI/CD, hasta interfaces modernas en Astro, React y Angular. Actualmente trabajo en Achilles Group y proyectos on-demand, buscando ampliar mis horizontes.",
     "hero.cta.projects": "▶ Ver proyectos",
     "hero.cta.contact": "Contactar",
     "hero.status": "PLAYER 1 · ONLINE",
@@ -45,15 +46,15 @@ export const translations: Record<Lang, Record<string, string>> = {
     "about.h2":
       "Desarrollo producto end-to-end, con foco en que el sistema siga andando el lunes a las 9.",
     "about.p1":
-      "Soy desarrollador de software con más de 3 años de experiencia en proyectos fullstack. Lideré reestructuraciones de sistemas y maquetación de interfaces modernas. Implementé facturación electrónica mediante la API de AFIP en diversas organizaciones.",
+      "Soy desarrollador de software con más de 4 años de experiencia en proyectos fullstack. Lideré reestructuraciones de sistemas y maquetación de interfaces modernas. Implementé facturación electrónica mediante la API de AFIP en diversas organizaciones.",
     "about.p2":
-      "También coordiné el área de soporte, resolviendo y asignando incidencias críticas con foco en tiempos de respuesta óptimos. Hoy divido mi tiempo entre Correo Argentino y proyectos CMS on-demand.",
+      "También coordiné el área de soporte, resolviendo y asignando incidencias críticas con foco en tiempos de respuesta óptimos. Hoy divido mi tiempo entre Achilles Group y proyectos CMS on-demand.",
     "about.stats.label": "STATS",
     "about.stats.key.exp": "EXP",
     "about.stats.key.region": "REGIÓN",
     "about.stats.key.class": "CLASE",
     "about.stats.key.lang": "IDIOMAS",
-    "about.stats.val.exp": "3+ años fullstack",
+    "about.stats.val.exp": "4+ años fullstack",
     "about.stats.val.region": "Argentina",
     "about.stats.val.class": "Ing. Informática · UNNOBA",
     "about.stats.val.lang": "ES nativo · EN intermedio",
@@ -91,7 +92,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "contact.sig.region": "Región",
     "contact.sig.exp": "Exp.",
     "contact.sig.mode": "Modo",
-    "contact.sig.expVal": "3+ años",
+    "contact.sig.expVal": "4+ años",
     "contact.sig.modeVal": "Remoto/Presencial",
     "contact.sig.available": "Disponible para proyectos",
     "contact.sig.chip": "OPEN TO WORK",
@@ -106,6 +107,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "nav.about": "About",
     "nav.projects": "Projects",
     "nav.skills": "Stack",
+    "nav.blog": "Blog",
     "nav.cta": "Start →",
 
     // SideDots
@@ -120,7 +122,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "hero.eyebrow": "Character development",
     "hero.subtitle": "Fullstack developer",
     "hero.paragraph":
-      "3+ years building and maintaining fullstack applications: from API integrations and CI/CD pipelines, to modern interfaces in Astro, React and Angular. Currently working at Correo Argentino and on-demand projects, looking to broaden my horizons.",
+      "4+ years building and maintaining fullstack applications: from API integrations and CI/CD pipelines, to modern interfaces in Astro, React and Angular. Currently working at Achilles Group and on-demand projects, looking to broaden my horizons.",
     "hero.cta.projects": "▶ See projects",
     "hero.cta.contact": "Get in touch",
     "hero.status": "PLAYER 1 · ONLINE",
@@ -144,15 +146,15 @@ export const translations: Record<Lang, Record<string, string>> = {
     "about.h2":
       "I build product end-to-end, focused on the system still running Monday at 9am.",
     "about.p1":
-      "Software developer with 3+ years of experience in fullstack projects. I led system refactors and built modern interfaces. I implemented electronic invoicing via the AFIP API across multiple organizations.",
+      "Software developer with 4+ years of experience in fullstack projects. I led system refactors and built modern interfaces. I implemented electronic invoicing via the AFIP API across multiple organizations.",
     "about.p2":
-      "I also coordinated support, resolving and routing critical incidents with focus on optimal response times. Today I split my time between Correo Argentino and on-demand CMS projects.",
+      "I also coordinated support, resolving and routing critical incidents with focus on optimal response times. Today I split my time between Achilles Group and on-demand CMS projects.",
     "about.stats.label": "STATS",
     "about.stats.key.exp": "EXP",
     "about.stats.key.region": "REGION",
     "about.stats.key.class": "CLASS",
     "about.stats.key.lang": "LANGS",
-    "about.stats.val.exp": "3+ years fullstack",
+    "about.stats.val.exp": "4+ years fullstack",
     "about.stats.val.region": "Argentina",
     "about.stats.val.class": "CS Engineering · UNNOBA",
     "about.stats.val.lang": "ES native · EN intermediate",
@@ -190,7 +192,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "contact.sig.region": "Region",
     "contact.sig.exp": "Exp.",
     "contact.sig.mode": "Mode",
-    "contact.sig.expVal": "3+ years",
+    "contact.sig.expVal": "4+ years",
     "contact.sig.modeVal": "Remote/On-site",
     "contact.sig.available": "Available for projects",
     "contact.sig.chip": "OPEN TO WORK",
@@ -220,6 +222,11 @@ export function applyLang(lang: Lang) {
   document.querySelectorAll<HTMLElement>("[data-i18n-aria]").forEach((el) => {
     const key = el.dataset.i18nAria;
     if (key && dict[key] !== undefined) el.setAttribute("aria-label", dict[key]);
+  });
+
+  // El blog vive en rutas por idioma, así que el link tiene que seguir al switcher.
+  document.querySelectorAll<HTMLAnchorElement>("[data-blog-link]").forEach((a) => {
+    a.setAttribute("href", lang === "en" ? "/blog/en" : "/blog");
   });
 
   document.querySelectorAll<HTMLButtonElement>("[data-lang-set]").forEach((btn) => {
