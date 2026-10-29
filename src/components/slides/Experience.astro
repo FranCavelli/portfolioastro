@@ -1,7 +1,32 @@
 ---
 import PixelPlanet from "../PixelPlanet.astro";
 
-const jobs = [
+type Satellite = {
+  company: string;
+  role: string;
+  period: string;
+  location: string;
+  name: string;
+  color: string;
+  stack: string[];
+  bullets: string[];
+};
+
+type Job = {
+  company: string;
+  role: string;
+  period: string;
+  location: string;
+  worldName: string;
+  color: string;
+  variant: "earth" | "gas" | "lava";
+  stack: string[];
+  bullets: string[];
+  // Trabajo on-demand que orbita alrededor de este planeta.
+  satellite?: Satellite;
+};
+
+const jobs: Job[] = [
   {
     company: "Achilles Group",
     role: "Desarrollador Fullstack · Full time",
@@ -9,28 +34,27 @@ const jobs = [
     location: "Remoto · Argentina",
     worldName: "Orbital-ACH",
     color: "#3bff8e",
-    variant: "earth" as const,
+    variant: "earth",
     stack: ["PHP", "Laravel", "Angular", "Docker", "OpenShift", "CI/CD"],
     bullets: [
       "Desarrollo de nuevas funcionalidades, reportes y mejoras sobre el sistema principal, integrando lógica de negocio con la API interna.",
       "Adaptación de flujos y procesos clave a integraciones con AFIP, cumpliendo requerimientos normativos.",
       "Participación en la infraestructura con Docker, OpenShift y pipelines CI/CD para automatizar despliegue y entorno de desarrollo.",
     ],
-  },
-  {
-    company: "Xionico",
-    role: "Desarrollador .NET · On-demand",
-    period: "Sep 2026 — Presente",
-    location: "Remoto · Argentina",
-    worldName: "Satélite-XNC",
-    color: "#38bdf8",
-    variant: "satellite" as const,
-    stack: ["C#", ".NET 8", "SQL Server", "WinForms", "APIs REST", "WMS"],
-    bullets: [
-      "Integración del WMS OrderManager con un VLM (Vertical Lift Module) para el picking de una distribuidora de consumo masivo: servicio .NET 8 que envía los pedidos al equipo y recibe por API lo realmente pickeado, faltantes incluidos.",
-      "Simulador del proveedor y tests automatizados sobre sus mensajes reales, para validar la interfaz antes de tener el equipo instalado.",
-      "Mantenimiento de OrderManager (C# / WinForms, SQL Server, stored procedures) y relevamiento con el cliente: definición funcional, documentación técnica y demos.",
-    ],
+    satellite: {
+      company: "Xionico",
+      role: "Desarrollador .NET · On-demand",
+      period: "Sep 2026 — Presente",
+      location: "Remoto · Argentina",
+      name: "Satélite-XNC",
+      color: "#38bdf8",
+      stack: ["C#", ".NET 8", "SQL Server", "WinForms", "APIs REST", "WMS"],
+      bullets: [
+        "Desarrollo de integraciones entre sistemas de gestión de depósitos (WMS) y equipos de automatización, mediante APIs REST y servicios en .NET.",
+        "Mantenimiento y evolución de aplicaciones de escritorio y bases de datos en C# y SQL Server.",
+        "Relevamiento de requerimientos con clientes, documentación técnica y funcional, y demos.",
+      ],
+    },
   },
   /*{
     company: "Alter Estudio",
@@ -39,7 +63,7 @@ const jobs = [
     location: "Remoto · Argentina",
     worldName: "Neo-Alter",
     color: "#c084fc",
-    variant: "gas" as const,
+    variant: "gas",
     stack: ["WordPress", "Hotmart", "Tienda Nube", "Hostinger"],
     bullets: [
       "Diseño desde cero de landing pages y e-commerce sobre stack CMS.",
@@ -53,7 +77,7 @@ const jobs = [
     location: "Remoto · Argentina",
     worldName: "Base-IC",
     color: "#fbbf24",
-    variant: "lava" as const,
+    variant: "lava",
     stack: ["PHP", "TypeScript", "MySQL", "AFIP", "REST"],
     bullets: [
       "Lideré al equipo de desarrollo brindando orientación en buenas prácticas de programación y estándares de calidad.",
@@ -69,7 +93,7 @@ const jobs = [
     location: "Remoto · Argentina",
     worldName: "Estación-CA",
     color: "#c084fc",
-    variant: "gas" as const,
+    variant: "gas",
     stack: ["Full Stack", "MySQL", "AngularJS"],
     bullets: [
       "Desarrollo y mantenimiento full stack de sistemas internos del correo.",
@@ -124,11 +148,22 @@ const jobs = [
       <ol class="worlds">
         {
           jobs.map((job, i) => (
-            <li class="world" data-side={i % 2 === 0 ? "left" : "right"} data-satellite={job.variant === "satellite" ? "" : undefined} data-world>
+            <li class="world" data-side={i % 2 === 0 ? "left" : "right"} data-world>
               <div class="planet-wrap">
                 <div class="planet" style={`--planet-color:${job.color}`} data-planet>
                   <div class="planet-glow" />
                   <div class="planet-ring" />
+                  {job.satellite && (
+                    <div class="orbit" aria-hidden="true">
+                      <div class="orbit-tilt">
+                        <div class="orbit-x">
+                          <div class="orbit-y">
+                            <PixelPlanet size={30} variant="satellite" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                   <div class="planet-sprite">
                     <PixelPlanet size={80} variant={job.variant} />
                   </div>
@@ -136,8 +171,14 @@ const jobs = [
                 <span class="planet-tag" style={`--planet-color:${job.color}`}>
                   {job.worldName}
                 </span>
+                {job.satellite && (
+                  <span class="planet-tag satellite-tag" style={`--planet-color:${job.satellite.color}`}>
+                    + {job.satellite.name}
+                  </span>
+                )}
               </div>
 
+              <div class="world-stack">
               <article class="world-card fade-up">
                 <header class="world-head">
                   <div>
@@ -158,6 +199,31 @@ const jobs = [
                   {job.stack.map((s) => <span class="tag">{s}</span>)}
                 </div>
               </article>
+
+              {job.satellite && (
+                <article class="world-card satellite-card fade-up" style={`--sat-color:${job.satellite.color}`}>
+                  <span class="satellite-eyebrow">Satélite · orbita {job.worldName}</span>
+                  <header class="world-head">
+                    <div>
+                      <h3>{job.satellite.company}</h3>
+                      <div class="world-meta">{job.satellite.role}</div>
+                    </div>
+                    <div class="world-time">
+                      <span class="period" style={`color:${job.satellite.color}`}>{job.satellite.period}</span>
+                      <span class="location">{job.satellite.location}</span>
+                    </div>
+                  </header>
+
+                  <ul class="bullets">
+                    {job.satellite.bullets.map((b) => <li>{b}</li>)}
+                  </ul>
+
+                  <div class="stack-row">
+                    {job.satellite.stack.map((s) => <span class="tag">{s}</span>)}
+                  </div>
+                </article>
+              )}
+              </div>
             </li>
           ))
         }
@@ -333,7 +399,7 @@ const jobs = [
     gap: 0;
   }
 
-  .world[data-side="left"] .world-card {
+  .world[data-side="left"] .world-stack {
     grid-column: 1;
     grid-row: 1;
   }
@@ -341,7 +407,7 @@ const jobs = [
     grid-column: 2;
     grid-row: 1;
   }
-  .world[data-side="right"] .world-card {
+  .world[data-side="right"] .world-stack {
     grid-column: 3;
     grid-row: 1;
   }
@@ -399,27 +465,111 @@ const jobs = [
     z-index: 0;
   }
 
-  /* Los trabajos on-demand orbitan como satélite: sin anillo y flotando. */
-  .world[data-satellite] .planet-ring {
-    display: none;
-  }
-  .world[data-satellite] .planet-sprite {
-    animation: satellite-float 5s ease-in-out infinite;
+  /* Satélite (trabajo on-demand) girando alrededor del planeta.
+     x = A·cos, y = B·sin: dos animaciones alternadas desfasadas un cuarto de vuelta.
+     El z-index cambia a mitad de vuelta para que pase por detrás del planeta. */
+  .orbit {
+    --orbit-a: 66px;
+    --orbit-b: 22px;
+    --orbit-t: 9s;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    z-index: 3;
+    pointer-events: none;
+    animation: orbit-depth var(--orbit-t) linear infinite;
   }
 
-  @keyframes satellite-float {
-    0%, 100% {
-      transform: translateY(0) rotate(-6deg);
+  .orbit-tilt {
+    transform: rotate(-18deg);
+  }
+
+  .orbit-x {
+    animation: orbit-x calc(var(--orbit-t) / 2) cubic-bezier(0.37, 0, 0.63, 1) infinite alternate;
+  }
+
+  .orbit-y {
+    animation: orbit-y calc(var(--orbit-t) / 2) cubic-bezier(0.37, 0, 0.63, 1) calc(var(--orbit-t) / -4) infinite alternate;
+  }
+
+  .orbit .pixel-planet,
+  .orbit :global(svg) {
+    display: block;
+    margin: -15px 0 0 -15px;
+  }
+
+  @keyframes orbit-x {
+    from {
+      transform: translateX(var(--orbit-a));
     }
-    50% {
-      transform: translateY(-6px) rotate(6deg);
+    to {
+      transform: translateX(calc(var(--orbit-a) * -1));
+    }
+  }
+
+  @keyframes orbit-y {
+    from {
+      transform: translateY(calc(var(--orbit-b) * -1));
+    }
+    to {
+      transform: translateY(var(--orbit-b));
+    }
+  }
+
+  @keyframes orbit-depth {
+    0%,
+    49.99% {
+      z-index: 3;
+    }
+    50%,
+    100% {
+      z-index: 1;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .world[data-satellite] .planet-sprite {
+    .orbit,
+    .orbit-x,
+    .orbit-y {
       animation: none;
     }
+    .orbit-x {
+      transform: translate(calc(var(--orbit-a) * 0.75), calc(var(--orbit-b) * -1));
+    }
+  }
+
+  /* Con satélite la fila es más alta: el planeta se queda a la altura de su tarjeta. */
+  .world:has(.orbit) {
+    align-items: start;
+  }
+  .world:has(.orbit) .planet-wrap {
+    margin-top: 72px;
+  }
+
+  .satellite-tag {
+    font-size: 0.62rem;
+    padding: 3px 8px;
+    margin-top: -4px;
+  }
+
+  .satellite-card {
+    border-color: color-mix(in oklab, var(--sat-color) 28%, transparent);
+    border-style: dashed;
+  }
+  .satellite-card::after {
+    display: none;
+  }
+
+  .satellite-eyebrow {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--sat-color);
   }
 
   .planet.is-active .planet-glow {
@@ -454,11 +604,17 @@ const jobs = [
     position: relative;
   }
 
-  .world[data-side="left"] .world-card {
+  .world[data-side="left"] .world-stack {
     margin-right: 20px;
   }
-  .world[data-side="right"] .world-card {
+  .world[data-side="right"] .world-stack {
     margin-left: 20px;
+  }
+
+  .world-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
   }
 
   .world-card::after {
@@ -532,8 +688,8 @@ const jobs = [
     .world {
       grid-template-columns: 90px 1fr;
     }
-    .world[data-side="left"] .world-card,
-    .world[data-side="right"] .world-card {
+    .world[data-side="left"] .world-stack,
+    .world[data-side="right"] .world-stack {
       grid-column: 2;
       grid-row: 1;
       margin: 0;
@@ -547,6 +703,22 @@ const jobs = [
       left: -16px !important;
       right: auto !important;
       background: linear-gradient(to left, transparent, rgba(59, 255, 142, 0.4)) !important;
+    }
+    .world:has(.orbit) .planet-wrap {
+      margin-top: 40px;
+    }
+    /* En el teléfono la columna del planeta es angosta: la tarjeta ya dice que es satélite. */
+    .satellite-tag {
+      display: none;
+    }
+    .orbit {
+      --orbit-a: 38px;
+      --orbit-b: 13px;
+    }
+    .orbit :global(svg) {
+      width: 22px !important;
+      height: 22px !important;
+      margin: -11px 0 0 -11px;
     }
     .trail {
       left: 45px;
