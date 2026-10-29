@@ -498,6 +498,14 @@ const jobs: Job[] = [
   .orbit :global(svg) {
     display: block;
     margin: -15px 0 0 -15px;
+    animation: satellite-spin 6s linear infinite;
+  }
+
+  /* Además de orbitar, el satélite gira sobre sí mismo. */
+  @keyframes satellite-spin {
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   @keyframes orbit-x {
@@ -532,7 +540,8 @@ const jobs: Job[] = [
   @media (prefers-reduced-motion: reduce) {
     .orbit,
     .orbit-x,
-    .orbit-y {
+    .orbit-y,
+    .orbit :global(svg) {
       animation: none;
     }
     .orbit-x {
