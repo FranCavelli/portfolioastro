@@ -537,15 +537,14 @@ const jobs: Job[] = [
     }
   }
 
+  /* Con "reducir movimiento" (Windows con las animaciones apagadas) sigue girando, más lento,
+     igual que el cohete y el humo del resto de la sección. */
   @media (prefers-reduced-motion: reduce) {
-    .orbit,
-    .orbit-x,
-    .orbit-y,
-    .orbit :global(svg) {
-      animation: none;
+    .orbit {
+      --orbit-t: 16s;
     }
-    .orbit-x {
-      transform: translate(calc(var(--orbit-a) * 0.75), calc(var(--orbit-b) * -1));
+    .orbit :global(svg) {
+      animation-duration: 12s;
     }
   }
 
