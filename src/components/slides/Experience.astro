@@ -17,6 +17,21 @@ const jobs = [
       "Participación en la infraestructura con Docker, OpenShift y pipelines CI/CD para automatizar despliegue y entorno de desarrollo.",
     ],
   },
+  {
+    company: "Xionico",
+    role: "Desarrollador .NET · On-demand",
+    period: "Sep 2026 — Presente",
+    location: "Remoto · Argentina",
+    worldName: "Satélite-XNC",
+    color: "#38bdf8",
+    variant: "satellite" as const,
+    stack: ["C#", ".NET 8", "SQL Server", "WinForms", "APIs REST", "WMS"],
+    bullets: [
+      "Integración del WMS OrderManager con un VLM (Vertical Lift Module) para el picking de una distribuidora de consumo masivo: servicio .NET 8 que envía los pedidos al equipo y recibe por API lo realmente pickeado, faltantes incluidos.",
+      "Simulador del proveedor y tests automatizados sobre sus mensajes reales, para validar la interfaz antes de tener el equipo instalado.",
+      "Mantenimiento de OrderManager (C# / WinForms, SQL Server, stored procedures) y relevamiento con el cliente: definición funcional, documentación técnica y demos.",
+    ],
+  },
   /*{
     company: "Alter Estudio",
     role: "Desarrollador CMS · On-demand",
@@ -109,7 +124,7 @@ const jobs = [
       <ol class="worlds">
         {
           jobs.map((job, i) => (
-            <li class="world" data-side={i % 2 === 0 ? "left" : "right"} data-world>
+            <li class="world" data-side={i % 2 === 0 ? "left" : "right"} data-satellite={job.variant === "satellite" ? "" : undefined} data-world>
               <div class="planet-wrap">
                 <div class="planet" style={`--planet-color:${job.color}`} data-planet>
                   <div class="planet-glow" />
@@ -382,6 +397,29 @@ const jobs = [
     opacity: 0;
     transition: opacity 400ms ease;
     z-index: 0;
+  }
+
+  /* Los trabajos on-demand orbitan como satélite: sin anillo y flotando. */
+  .world[data-satellite] .planet-ring {
+    display: none;
+  }
+  .world[data-satellite] .planet-sprite {
+    animation: satellite-float 5s ease-in-out infinite;
+  }
+
+  @keyframes satellite-float {
+    0%, 100% {
+      transform: translateY(0) rotate(-6deg);
+    }
+    50% {
+      transform: translateY(-6px) rotate(6deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .world[data-satellite] .planet-sprite {
+      animation: none;
+    }
   }
 
   .planet.is-active .planet-glow {

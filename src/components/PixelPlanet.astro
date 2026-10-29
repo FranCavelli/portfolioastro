@@ -1,11 +1,11 @@
 ---
 interface Props {
   size?: number;
-  variant?: "earth" | "gas" | "lava";
+  variant?: "earth" | "gas" | "lava" | "satellite";
 }
 const { size = 80, variant = "earth" } = Astro.props;
 
-// 3 variantes de planeta pixelado. Mismo grid 16x16 (14 rows contenido + 2 padding).
+// 3 variantes de planeta pixelado + un satélite (para los trabajos on-demand). Mismo grid 16x16 (14 rows contenido + 2 padding).
 // Colores por variante abajo.
 const PATTERNS: Record<string, string[]> = {
   earth: [
@@ -62,6 +62,24 @@ const PATTERNS: Record<string, string[]> = {
     "....bbbbbbbb....",
     "................",
   ],
+  satellite: [
+    "................",
+    "......a.a.......",
+    ".......a........",
+    ".......a........",
+    "......bbbb......",
+    "ppPp.bcccCb.pPpp",
+    "pPpPkbcCccbkpPpP",
+    "ppPp.bccCcb.pPpp",
+    "pPpP.bcccCb.PpPp",
+    "......bbbb......",
+    "......dbbd......",
+    ".....dd..dd.....",
+    "................",
+    "................",
+    "................",
+    "................",
+  ],
 };
 
 const COLORS: Record<string, Record<string, string>> = {
@@ -84,12 +102,23 @@ const COLORS: Record<string, Record<string, string>> = {
     e: "#d45a24",
     L: "#fbbf24",
   },
+  satellite: {
+    b: "#0a1a24",
+    c: "#7dd3fc",
+    C: "#38bdf8",
+    p: "#1e3a8a",
+    P: "#3b82f6",
+    k: "#94a3b8",
+    a: "#cbd5e1",
+    d: "#94a3b8",
+  },
 };
 
 const GLOW: Record<string, string> = {
   earth: "rgba(59, 160, 255, 0.45)",
   gas: "rgba(168, 110, 220, 0.5)",
   lava: "rgba(251, 191, 36, 0.5)",
+  satellite: "rgba(56, 189, 248, 0.5)",
 };
 
 const pixels = PATTERNS[variant];

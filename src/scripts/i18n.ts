@@ -22,7 +22,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "hero.eyebrow": "Desarrollo de personaje",
     "hero.subtitle": "Desarrollador fullstack",
     "hero.paragraph":
-      "Más de 4 años diseñando y manteniendo aplicaciones fullstack: desde integraciones con APIs y pipelines CI/CD, hasta interfaces modernas en Astro, React y Angular. Actualmente trabajo en Achilles Group y proyectos on-demand, buscando ampliar mis horizontes.",
+      "Más de 4 años diseñando y manteniendo aplicaciones fullstack: desde integraciones con APIs y pipelines CI/CD, hasta interfaces modernas en Astro, React y Angular. Actualmente trabajo en Achilles Group y, on-demand, en Xionico, buscando ampliar mis horizontes.",
     "hero.cta.projects": "▶ Ver proyectos",
     "hero.cta.contact": "Contactar",
     "hero.status": "PLAYER 1 · ONLINE",
@@ -48,7 +48,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "about.p1":
       "Soy desarrollador de software con más de 4 años de experiencia en proyectos fullstack. Lideré reestructuraciones de sistemas y maquetación de interfaces modernas. Implementé facturación electrónica mediante la API de AFIP en diversas organizaciones.",
     "about.p2":
-      "También coordiné el área de soporte, resolviendo y asignando incidencias críticas con foco en tiempos de respuesta óptimos. Hoy divido mi tiempo entre Achilles Group y proyectos CMS on-demand.",
+      "También coordiné el área de soporte, resolviendo y asignando incidencias críticas con foco en tiempos de respuesta óptimos. Hoy divido mi tiempo entre Achilles Group y Xionico, donde integro su WMS con equipos de picking automatizado.",
     "about.stats.label": "STATS",
     "about.stats.key.exp": "EXP",
     "about.stats.key.region": "REGIÓN",
@@ -122,7 +122,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "hero.eyebrow": "Character development",
     "hero.subtitle": "Fullstack developer",
     "hero.paragraph":
-      "4+ years building and maintaining fullstack applications: from API integrations and CI/CD pipelines, to modern interfaces in Astro, React and Angular. Currently working at Achilles Group and on-demand projects, looking to broaden my horizons.",
+      "4+ years building and maintaining fullstack applications: from API integrations and CI/CD pipelines, to modern interfaces in Astro, React and Angular. Currently working at Achilles Group and, on-demand, at Xionico, looking to broaden my horizons.",
     "hero.cta.projects": "▶ See projects",
     "hero.cta.contact": "Get in touch",
     "hero.status": "PLAYER 1 · ONLINE",
@@ -148,7 +148,7 @@ export const translations: Record<Lang, Record<string, string>> = {
     "about.p1":
       "Software developer with 4+ years of experience in fullstack projects. I led system refactors and built modern interfaces. I implemented electronic invoicing via the AFIP API across multiple organizations.",
     "about.p2":
-      "I also coordinated support, resolving and routing critical incidents with focus on optimal response times. Today I split my time between Achilles Group and on-demand CMS projects.",
+      "I also coordinated support, resolving and routing critical incidents with focus on optimal response times. Today I split my time between Achilles Group and Xionico, where I integrate their WMS with automated picking equipment.",
     "about.stats.label": "STATS",
     "about.stats.key.exp": "EXP",
     "about.stats.key.region": "REGION",
